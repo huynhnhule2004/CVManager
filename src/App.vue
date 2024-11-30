@@ -4,13 +4,11 @@ import Sidebar from './layout/Sidebar.vue'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.js";
 import Header from './layout/Header.vue';
+import Index from './layout/Index.vue';
 </script>
 
 <template>
-  <div class="wrapper">
-    <Sidebar></Sidebar>
-    <Header></Header>
-  </div>
+<Index></Index>
 
   <!-- <HelloWorld/> -->
 </template>
