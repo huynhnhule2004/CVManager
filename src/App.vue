@@ -4,123 +4,125 @@ import { database } from './firebase'; // Firebase config file
 import { ref as dbRef, set, onValue } from 'firebase/database';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import CV1 from './components/pages/CV1.vue';
 
-// Dữ liệu CV
-const cv = ref({
-  name: 'Họ Tên',
-  position: 'Vị trí công việc bạn muốn ứng tuyển',
-  gender: 'Nữ',
-  birthday: '01/01/2000',
-  hometown: 'Thạch Thất, Hà Tây',
-  objectives: 'Mục tiêu ngắn hạn và dài hạn...',
-  skills: ['Tin học văn phòng', 'Tiếng Anh giao tiếp', 'Chỉnh sửa video, Photoshop'],
-  awards: ['Thành viên ưu tú...', 'Giải nhất cuộc thi...'],
-  education: {
-    school: 'Học viện Báo chí và Tuyên truyền',
-    major: 'Báo chí truyền thông',
-    rank: 'Khá',
-  },
-  experience: 'Biên tập viên tại Ban Văn Hóa...',
-  activities: 'Tham gia tình nguyện...',
-  profilePicture: '',
-});
+// // Dữ liệu CV
+// const cv = ref({
+//   name: 'Họ Tên',
+//   position: 'Vị trí công việc bạn muốn ứng tuyển',
+//   gender: 'Nữ',
+//   birthday: '01/01/2000',
+//   hometown: 'Thạch Thất, Hà Tây',
+//   objectives: 'Mục tiêu ngắn hạn và dài hạn...',
+//   skills: ['Tin học văn phòng', 'Tiếng Anh giao tiếp', 'Chỉnh sửa video, Photoshop'],
+//   awards: ['Thành viên ưu tú...', 'Giải nhất cuộc thi...'],
+//   education: {
+//     school: 'Học viện Báo chí và Tuyên truyền',
+//     major: 'Báo chí truyền thông',
+//     rank: 'Khá',
+//   },
+//   experience: 'Biên tập viên tại Ban Văn Hóa...',
+//   activities: 'Tham gia tình nguyện...',
+//   profilePicture: '',
+// });
 
-// Biến lưu ảnh preview
-const previewImage = ref(null);
+// // Biến lưu ảnh preview
+// const previewImage = ref(null);
 
-// Cập nhật trường nội dung
-const updateField = (field, event) => {
-  cv.value[field] = event.target.innerText;
-};
+// // Cập nhật trường nội dung
+// const updateField = (field, event) => {
+//   cv.value[field] = event.target.innerText;
+// };
 
-// Upload ảnh đại diện
-const uploadProfilePicture = (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
+// // Upload ảnh đại diện
+// const uploadProfilePicture = (event) => {
+//   const file = event.target.files[0];
+//   if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    previewImage.value = e.target.result;
-    cv.value.profilePicture = e.target.result;
-    saveCV();
-  };
-  reader.readAsDataURL(file);
-};
+//   const reader = new FileReader();
+//   reader.onload = (e) => {
+//     previewImage.value = e.target.result;
+//     cv.value.profilePicture = e.target.result;
+//     saveCV();
+//   };
+//   reader.readAsDataURL(file);
+// };
 
-// Lưu CV vào Firebase
-const saveCV = () => {
-  const cvRef = dbRef(database, 'cv/user1');
-  set(cvRef, { ...cv.value });
-};
+// // Lưu CV vào Firebase
+// const saveCV = () => {
+//   const cvRef = dbRef(database, 'cv/user1');
+//   set(cvRef, { ...cv.value });
+// };
 
-// Tải xuống PDF
-// Tải xuống PDF
-const downloadPDF = async () => {
-  const element = document.querySelector('.cv-template');
+// // Tải xuống PDF
+// // Tải xuống PDF
+// const downloadPDF = async () => {
+//   const element = document.querySelector('.cv-template');
 
-  if (!element) {
-    console.error('Không tìm thấy phần tử CV để xuất PDF.');
-    return;
-  }
+//   if (!element) {
+//     console.error('Không tìm thấy phần tử CV để xuất PDF.');
+//     return;
+//   }
 
-  try {
-    // Lấy dữ liệu hình ảnh từ previewImage
-    const imgData = previewImage.value;
+//   try {
+//     // Lấy dữ liệu hình ảnh từ previewImage
+//     const imgData = previewImage.value;
 
-    // Kiểm tra nếu ảnh tồn tại
-    if (!imgData) {
-      console.error('Không có ảnh đại diện để chèn vào PDF.');
-      return;
-    }
+//     // Kiểm tra nếu ảnh tồn tại
+//     if (!imgData) {
+//       console.error('Không có ảnh đại diện để chèn vào PDF.');
+//       return;
+//     }
 
-    // Lấy canvas từ toàn bộ phần tử CV
-    const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: null, // Loại bỏ nền gốc
-    });
+//     // Lấy canvas từ toàn bộ phần tử CV
+//     const canvas = await html2canvas(element, {
+//       scale: 2,
+//       useCORS: true,
+//       backgroundColor: null, // Loại bỏ nền gốc
+//     });
 
-    const ctx = canvas.getContext('2d');
-    ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = '#ffffff'; // Màu nền trắng
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+//     const ctx = canvas.getContext('2d');
+//     ctx.globalCompositeOperation = 'destination-over';
+//     ctx.fillStyle = '#ffffff'; // Màu nền trắng
+//     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Lấy dữ liệu ảnh từ canvas
-    const imgDataCanvas = canvas.toDataURL('image/png');
+//     // Lấy dữ liệu ảnh từ canvas
+//     const imgDataCanvas = canvas.toDataURL('image/png');
 
-    // Tạo PDF và thêm hình ảnh đã render từ canvas
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const pdfWidth = 190; // Chiều rộng PDF
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Tỉ lệ dựa trên chiều cao canvas
+//     // Tạo PDF và thêm hình ảnh đã render từ canvas
+//     const pdf = new jsPDF('p', 'mm', 'a4');
+//     const pdfWidth = 190; // Chiều rộng PDF
+//     const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Tỉ lệ dựa trên chiều cao canvas
 
-    // Thêm hình ảnh vào PDF
-    pdf.addImage(imgDataCanvas, 'PNG', 10, 10, pdfWidth, pdfHeight);
+//     // Thêm hình ảnh vào PDF
+//     pdf.addImage(imgDataCanvas, 'PNG', 10, 10, pdfWidth, pdfHeight);
 
-    // Lưu PDF
-    pdf.save('CV.pdf');
-  } catch (error) {
-    console.error('Lỗi khi tạo PDF:', error);
-  }
-};
+//     // Lưu PDF
+//     pdf.save('CV.pdf');
+//   } catch (error) {
+//     console.error('Lỗi khi tạo PDF:', error);
+//   }
+// };
 
 
-// Load dữ liệu từ Firebase khi khởi động
-onMounted(() => {
-  const cvRef = dbRef(database, 'cv/user1');
-  onValue(cvRef, (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-      cv.value = data;
-      if (data.profilePicture) {
-        previewImage.value = data.profilePicture;
-      }
-    }
-  });
-});
+// // Load dữ liệu từ Firebase khi khởi động
+// onMounted(() => {
+//   const cvRef = dbRef(database, 'cv/user1');
+//   onValue(cvRef, (snapshot) => {
+//     const data = snapshot.val();
+//     if (data) {
+//       cv.value = data;
+//       if (data.profilePicture) {
+//         previewImage.value = data.profilePicture;
+//       }
+//     }
+//   });
+// });
 </script>
 
 <template>
-  <div>
+  <CV1></CV1>
+  <!-- <div>
     <h1>Chỉnh sửa CV</h1>
     <div class="cv-template">
       <div class="cv-left">
@@ -155,10 +157,10 @@ onMounted(() => {
       <button @click="saveCV" class="me-3">Lưu CV</button>
       <button @click="downloadPDF">Tải CV về</button>
     </div>
-  </div>
+  </div> -->
 </template>
 
-<style scoped>
+
 .cv-template {
   display: flex;
   border: 1px solid #ccc;
@@ -202,4 +204,4 @@ button:hover {
   height: auto;
   border-radius: 8px;
 }
-</style>
+</style> -->

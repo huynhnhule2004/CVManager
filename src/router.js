@@ -1,15 +1,16 @@
-import { createRouter, createMemoryHistory } from "vue-router";
+import { createRouter, createMemoryHistory, createWebHistory } from "vue-router";
 import Dashboard from "./components/Dashboard.vue";
+import CV1 from "./components/pages/CV1.vue";
 
 const routes = [
     {
         path: '/',
         component: Dashboard,
+    },
+    {
+        path: '/cv1',
+        component: CV1,
     }
-    // {
-    //     path: '/categories',
-    //     component: Categories,
-    // },
     // {
     //     path: '/categories/add',
     //     component: AddCategory,
@@ -61,7 +62,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createMemoryHistory(),
+    history: createWebHistory(),
     routes,
 })
 
