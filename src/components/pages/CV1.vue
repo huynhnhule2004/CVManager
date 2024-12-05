@@ -1,0 +1,287 @@
+<script setup>
+import { ref } from 'vue';
+
+// Dữ liệu
+const avatarUrl = 'https://i.pinimg.com/564x/eb/57/6f/eb576ff023487bcb1fa3ad61ee7b23ee.jpg';
+const name = 'HO HOANG';
+const specialize = 'Front-End Developer';
+const phone = '+84123456789';
+const email = 'hohoang.dev@gmail.com';
+const website = 'lundevweb.com';
+const location = 'HCMC - VietNam';
+const birthday = '01/01/0101';
+const university = 'AAAA University';
+const introduction = 'Lorem ipsum dolor sit amet consectetur adipisicing elit...';
+
+const experiences = ref([
+  {
+    title: 'Front-End Developer',
+    year: '2020 - 2022',
+    company: 'ABC D company',
+    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit...'
+  },
+  {
+    title: 'Student',
+    year: '2015 - 2019',
+    company: 'ACDC University',
+    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit...'
+  }
+]);
+
+const skills = ref([
+  'HTML', 'CSS', 'Bootstrap', 'Javascript', 'PHP', 'MySql', 'Git', 'Laravel'
+]);
+
+const projects = ref([
+  {
+    title: 'Website shopping',
+    year: '2020',
+    website: 'www.lundevweb.com',
+    role: 'Front-End Developer',
+    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit...',
+    tasks: [
+      'Lorem ipsum dolordolores.',
+      'Lorem ipsum dolor sit amet consectetur.',
+      'Lorem ipsum dolor sit amet consectetur dolores.'
+    ]
+  },
+  {
+    title: 'Website shopping',
+    year: '2020',
+    website: 'www.lundevweb.com',
+    role: 'Front-End Developer',
+    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit...',
+    tasks: [
+      'Lorem ipsum dolordolores.',
+      'Lorem ipsum dolor sit amet consectetur.',
+      'Lorem ipsum dolor sit amet consectetur dolores.'
+    ]
+  },
+  {
+    title: 'Website shopping',
+    year: '2020',
+    website: 'www.lundevweb.com',
+    role: 'Front-End Developer',
+    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit...',
+    tasks: [
+      'Lorem ipsum dolordolores.',
+      'Lorem ipsum dolor sit amet consectetur.',
+      'Lorem ipsum dolor sit amet consectetur dolores.'
+    ]
+  }
+]);
+</script>
+<template>
+    <div class="container1">
+      <div class="avatar1">
+        <img :src="avatarUrl" alt="Avatar" />
+      </div>
+      <div class="name">
+        <h1>{{ name }}</h1>
+        <div class="specialize">{{ specialize }}</div>
+        <ul class="contact">
+          <li>
+            <span>P</span> {{ phone }}
+          </li>
+          <li>
+            <span>E</span> {{ email }}
+          </li>
+          <li>
+            <span>W</span> {{ website }}
+          </li>
+        </ul>
+      </div>
+      <div class="info">
+        <ul>
+          <li>From <b>{{ location }}</b></li>
+          <li>{{ birthday }}</li>
+          <li>{{ university }}</li>
+        </ul>
+      </div>
+      <div class="intro">
+        <h2>INTRODUCE MYSELF</h2>
+        <p>{{ introduction }}</p>
+      </div>
+      <div class="experience">
+        <h2>EXPERIENCE</h2>
+        <div v-for="(exp, index) in experiences" :key="index" class="item">
+          <h4>{{ exp.title }}</h4>
+          <div class="time">
+            <span>{{ exp.year }}</span>
+            <span>{{ exp.company }}</span>
+          </div>
+          <div class="des">{{ exp.description }}</div>
+        </div>
+        <h2 class="skills">SKILLS</h2>
+        <ul>
+          <li v-for="(skill, index) in skills" :key="index">{{ skill }}</li>
+        </ul>
+      </div>
+      <div class="project">
+        <h2>PROJECTS</h2>
+        <div v-for="(project, index) in projects" :key="index" class="item">
+          <h4>{{ project.title }}</h4>
+          <div class="time">{{ project.year }}</div>
+          <div class="web">{{ project.website }}</div>
+          <div class="location">{{ project.role }}</div>
+          <div class="des">
+            {{ project.description }}
+            <ul>
+              <li v-for="(item, i) in project.tasks" :key="i">{{ item }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  
+
+  
+  <style scoped>
+  body {
+    background-color: #d5d5d5;
+    font-family: system-ui;
+  }
+  
+  .container1 {
+    background-color: #e9e7ea;
+    width: 1000px;
+    max-width: 100%;
+    margin: auto;
+    padding: 50px;
+    box-shadow: 0 10px 50px #858585;
+    display: grid;
+    grid-template-columns: 35% 60%;
+    column-gap: 5%;
+    row-gap: 30px;
+  }
+  
+  .avatar1 img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .avatar1 {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+  
+  .name {
+    padding-left: 30px;
+    border-left: 1px solid #000;
+  }
+  
+  .name h1 {
+    font-weight: 300;
+    font-size: xxx-large;
+    margin: 0px 0 5px;
+  }
+  
+  .name .specialize {
+    margin: 0;
+    font-weight: bold;
+    letter-spacing: 3px;
+  }
+  
+  .name .contact {
+    padding: 0;
+    list-style: none;
+  }
+  
+  .name .contact span {
+    display: inline-block;
+    background-color: #000;
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    text-align: center;
+    border-radius: 50%;
+    font-size: small;
+    margin-right: 20px;
+  }
+  
+  .name .contact li {
+    padding: 5px 0;
+    transform: translate(-40px);
+    background-color: #e9e7ea;
+  }
+  
+  .info ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: right;
+    line-height: 30px;
+  }
+  
+  h2 {
+    padding: 0;
+    margin: 0 0 20px 0;
+  }
+  
+  .intro {
+    padding-left: 30px;
+    border-left: 1px solid #000;
+    text-align: justify;
+  }
+  
+  .experience {
+    text-align: right;
+  }
+  
+  .experience h4 {
+    margin: 20px 0 10px;
+  }
+  
+  .skills {
+    margin-top: 50px;
+  }
+  
+  .experience ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  
+  .experience li {
+    padding: 10px 0;
+  }
+  
+  .project {
+    padding-left: 30px;
+    text-align: justify;
+    border-left: 1px solid #000;
+  }
+  
+  .project h4 {
+    margin: 20px 0 10px;
+  }
+  
+  .project .web {
+    color: #0c7373;
+    padding: 10px 0;
+  }
+  
+  .project .location {
+    font-weight: 500;
+    padding-bottom: 10px;
+  }
+  
+  .project .item {
+    position: relative;
+  }
+  
+  .project .item::before {
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    background-color: #000;
+    content: '';
+    border-radius: 50%;
+    left: -37px;
+  }
+  </style>
+  
