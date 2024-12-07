@@ -1,3 +1,32 @@
+<script setup>
+import { ref, onMounted } from "vue";
+
+// Khởi tạo các biến trạng thái
+
+const username = ref('User');
+const profileImage = ref('../assets/img/profile.jpg');
+
+    onMounted(() => {
+      // Lấy thông tin từ localStorage và cập nhật giá trị các biến
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      if (storedUser) {
+        username.value = storedUser.username || 'User';
+        profileImage.value = storedUser.avatar || '../assets/img/profile.jpg';
+      }
+    });
+function logout() {
+  // Xóa thông tin người dùng trong localStorage
+  localStorage.removeItem('user');
+
+  // Cập nhật các biến trạng thái trong Vue nếu cần
+  username.value = 'Admin';
+  profileImage.value = '../assets/img/profile.jpg';
+
+  // Tải lại trang
+  window.location.reload();
+}
+
+</script>
 <template>
     <div class="main-header">
         <div class="main-header-logo">
@@ -249,11 +278,11 @@
                     <li class="nav-item topbar-user dropdown hidden-caret">
                         <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                             <div class="avatar-sm">
-                                <img src="../assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                                <img :src="profileImage" alt="..." class="avatar-img rounded-circle" />
                             </div>
                             <span class="profile-username">
                                 <span class="op-7">Hi,</span>
-                                <span class="fw-bold">Hizrian</span>
+                                <span class="fw-bold">{{ username }}</span>
                             </span>
                         </a>
                         <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -261,11 +290,11 @@
                                 <li>
                                     <div class="user-box">
                                         <div class="avatar-lg">
-                                            <img src="../assets/img/profile.jpg" alt="image profile"
+                                            <img :src="profileImage" alt="image profile"
                                                 class="avatar-img rounded" />
                                         </div>
                                         <div class="u-text">
-                                            <h4>Hizrian</h4>
+                                            <h4>{{ username }}</h4>
                                             <p class="text-muted">hello@example.com</p>
                                             <a href="profile.html" class="btn btn-xs btn-secondary btn-sm">View
                                                 Profile</a>
@@ -280,7 +309,7 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#">Account Setting</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Logout</a>
+                                    <a class="dropdown-item" href="#" @click="logout">Logout</a>
                                 </li>
                             </div>
                         </ul>

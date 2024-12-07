@@ -203,6 +203,6 @@ import Header from "./Header.vue";
         <div class="custom-toggle">
           <i class="icon-settings"></i>
         </div>
-      </div>
+    </div>
   </div>
 </template>

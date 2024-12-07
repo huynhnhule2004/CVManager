@@ -12,9 +12,8 @@ import Test from './components/pages/Test.vue';
 </script>
 
 <template>
-  <CV1></CV1>
-   <!-- <Index></Index> -->
-    <!-- <Test></Test> -->
+  <!-- <CV1></CV1> -->
+  <Index></Index>
 </template>
 
 

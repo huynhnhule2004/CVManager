@@ -1,8 +1,7 @@
 <script setup>
 import { ref, onMounted, nextTick } from 'vue';
-import { database } from '../../firebase'; // Firebase config file
+import { database } from '../../firebase';
 import { ref as dbRef, set, onValue } from 'firebase/database';
-// import { useRouter } from 'vue-router';
 import { useRouter, useRoute } from 'vue-router';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -10,7 +9,6 @@ import jsPDF from 'jspdf';
 const router = useRouter();
 const route = useRoute();
 
-// Dữ liệu CV
 const cv = ref({
     avatarUrl: '',
     name: 'HO HOANG',
@@ -48,44 +46,39 @@ const cv = ref({
         },
     ],
 });
-// Biến lưu ảnh preview
 const previewImage = ref('');
 const isHidden = ref(false);
 
 
-// Cập nhật trường nội dung
 const updateField = (field, event) => {
     cv.value[field] = event.target.innerText;
 };
 
 
 
-// Upload ảnh đại diện
 const uploadProfilePicture = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (e) => {
-        const imageBase64 = e.target.result; // Đọc ảnh dưới dạng base64
-        cv.value.avatarUrl = imageBase64; // Lưu ảnh dưới dạng base64 vào CV
-        previewImage.value = imageBase64; // Cập nhật ảnh preview
-        saveCV(); // Lưu CV vào Firebase   
+        const imageBase64 = e.target.result;
+        cv.value.avatarUrl = imageBase64;
+        previewImage.value = imageBase64;
+        saveCV();
     };
-    reader.readAsDataURL(file); // Đọc ảnh dưới dạng base64
+    reader.readAsDataURL(file);
 
 };
 
 
 
-// Lưu CV vào Firebase
 const saveCV = () => {
     const cvRef = dbRef(database, 'cv/user2');
     set(cvRef, { ...cv.value });
 };
 
 
-// Tải xuống PDF
 const downloadPDF = async () => {
     const element = document.querySelector('.cv-template');
     isHidden.value = true;
@@ -103,35 +96,31 @@ const downloadPDF = async () => {
     }
 
     try {
-        const imgData = previewImage.value; // Sử dụng base64 từ CV
+        const imgData = previewImage.value;
         if (!imgData || !imgData.startsWith('data:image')) {
             console.error('Không có ảnh đại diện hợp lệ để chèn vào PDF.');
             return;
         }
-        // Lấy canvas từ toàn bộ phần tử CV
         const canvas = await html2canvas(element, {
             scale: 2,
             useCORS: true,
-            backgroundColor: null, // Loại bỏ nền gốc
+            backgroundColor: null,
         });
 
         const ctx = canvas.getContext('2d');
         ctx.globalCompositeOperation = 'destination-over';
-        ctx.fillStyle = '#ffffff'; // Màu nền trắng
+        ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Lấy dữ liệu ảnh từ canvas
         const imgDataCanvas = canvas.toDataURL('image/png');
         console.log('Dữ liệu base64 của canvas:', imgDataCanvas);
 
-        // Tạo PDF và thêm hình ảnh đã render từ canvas
         const pdf = new jsPDF('p', 'mm', 'a4');
-        const pdfWidth = 190; // Chiều rộng PDF
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Tỉ lệ dựa trên chiều cao canvas
+        const pdfWidth = 190;
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
         pdf.addImage(imgDataCanvas, 'PNG', 10, 10, pdfWidth, pdfHeight);
 
-        // Lưu PDF
         pdf.save('CV.pdf');
     } catch (error) {
         console.error('Lỗi khi tạo PDF:', error);
@@ -158,102 +147,118 @@ onMounted(() => {
 
 </script>
 <template>
-    <div class="container1 cv-template">
-        <div class="avatar1">
-            <div class="avatar-wrapper">
-                <!-- <ProfilePicture :key="imageKey" :src="previewImage" /> -->
-                <img v-if="previewImage" :src="previewImage" alt="Ảnh đại diện" class="preview-img" />
-                <input v-if="!isHidden" type="file" accept="image/*" @change="uploadProfilePicture" class="mt-2" />
-            </div>
-        </div>
-        <div class="name">
-            <h1 contenteditable="true" @input="updateField('name', $event)">{{ cv.name }}</h1>
-            <div class="specialize" contenteditable="true" @input="updateField('specialize', $event)">{{ cv.specialize
-                }}</div>
-            <ul class="contact">
-                <li>
-                    <span>P</span>
-                    <p class="d-inline-block m-0" contenteditable="true" @input="updateField('phone', $event)">{{
-                        cv.phone }}</p>
-                </li>
-                <li>
-                    <span>E</span>
-                    <p class="d-inline-block m-0" contenteditable="true" @input="updateField('email', $event)">{{
-                        cv.email }}</p>
-                </li>
-                <li>
-                    <span>W</span>
-                    <p class="d-inline-block m-0" contenteditable="true" @input="updateField('website', $event)">{{
-                        cv.website }}</p>
-                </li>
-            </ul>
-        </div>
-        <div class="info">
-            <ul>
-                <li>
-                    From <b contenteditable="true" @input="updateField('location', $event)">{{ cv.location }}</b>
-                </li>
-                <li contenteditable="true" @input="updateField('birthday', $event)">{{ cv.birthday }}</li>
-                <li contenteditable="true" @input="updateField('university', $event)">{{ cv.university }}</li>
-            </ul>
-        </div>
-        <div class="intro">
-            <h2>INTRODUCE MYSELF</h2>
-            <p contenteditable="true" @input="updateField('introduction', $event)">{{ cv.introduction }}</p>
-        </div>
-        <div class="experience">
-            <h2>EXPERIENCE</h2>
-            <div v-for="(exp, index) in cv.experiences" :key="index" class="item">
-                <h4 contenteditable="true" @input="updateField('experiences[' + index + '].title', $event)">{{ exp.title
-                    }}</h4>
-                <div class="time">
-                    <span contenteditable="true" @input="updateField('experiences[' + index + '].year', $event)">{{
-                        exp.year }}</span>
-                    <span contenteditable="true" @input="updateField('experiences[' + index + '].company', $event)">{{
-                        exp.company }}</span>
+    <div class="container">
+        <div class="page-inner">
+            <div class="container1 cv-template">
+                <div class="avatar1">
+                    <div class="avatar-wrapper">
+                        <!-- <ProfilePicture :key="imageKey" :src="previewImage" /> -->
+                        <img v-if="previewImage" :src="previewImage" alt="Ảnh đại diện" class="preview-img" />
+                        <input v-if="!isHidden" type="file" accept="image/*" @change="uploadProfilePicture"
+                            class="mt-2" />
+                    </div>
                 </div>
-                <div class="des" contenteditable="true"
-                    @input="updateField('experiences[' + index + '].description', $event)">{{ exp.description }}</div>
-            </div>
-            <h2 class="skills">SKILLS</h2>
-            <ul>
-                <li v-for="(skill, index) in cv.skills" :key="index" contenteditable="true"
-                    @input="updateField('skills[' + index + ']', $event)">{{ skill }}</li>
-            </ul>
-        </div>
-        <div class="project">
-            <h2>PROJECTS</h2>
-            <div v-for="(project, index) in cv.projects" :key="index" class="item">
-                <h4 contenteditable="true" @input="updateField('projects[' + index + '].title', $event)">{{
-                    project.title }}</h4>
-                <div class="time">
-                    <span contenteditable="true" @input="updateField('projects[' + index + '].year', $event)">{{
-                        project.year }}</span>
-                </div>
-                <div class="web" contenteditable="true" @input="updateField('projects[' + index + '].website', $event)">
-                    {{ project.website }}
-                </div>
-                <div class="location" contenteditable="true"
-                    @input="updateField('projects[' + index + '].role', $event)">
-                    {{ project.role }}
-                </div>
-                <div class="des" contenteditable="true"
-                    @input="updateField('projects[' + index + '].description', $event)">
-                    {{ project.description }}
-                    <ul>
-                        <li v-for="(item, i) in project.tasks" :key="i" contenteditable="true"
-                            @input="updateField('projects[' + index + '].tasks[' + i + ']', $event)">
-                            {{ item }}
+                <div class="name">
+                    <h1 contenteditable="true" @input="updateField('name', $event)">{{ cv.name }}</h1>
+                    <div class="specialize" contenteditable="true" @input="updateField('specialize', $event)">{{
+                        cv.specialize
+                        }}</div>
+                    <ul class="contact">
+                        <li>
+                            <span>P</span>
+                            <p class="d-inline-block m-0" contenteditable="true" @input="updateField('phone', $event)">
+                                {{
+                                    cv.phone }}</p>
+                        </li>
+                        <li>
+                            <span>E</span>
+                            <p class="d-inline-block m-0" contenteditable="true" @input="updateField('email', $event)">
+                                {{
+                                    cv.email }}</p>
+                        </li>
+                        <li>
+                            <span>W</span>
+                            <p class="d-inline-block m-0" contenteditable="true"
+                                @input="updateField('website', $event)">{{
+                                    cv.website }}</p>
                         </li>
                     </ul>
                 </div>
+                <div class="info">
+                    <ul>
+                        <li>
+                            From <b contenteditable="true" @input="updateField('location', $event)">{{ cv.location
+                                }}</b>
+                        </li>
+                        <li contenteditable="true" @input="updateField('birthday', $event)">{{ cv.birthday }}</li>
+                        <li contenteditable="true" @input="updateField('university', $event)">{{ cv.university }}</li>
+                    </ul>
+                </div>
+                <div class="intro">
+                    <h2>INTRODUCE MYSELF</h2>
+                    <p contenteditable="true" @input="updateField('introduction', $event)">{{ cv.introduction }}</p>
+                </div>
+                <div class="experience">
+                    <h2>EXPERIENCE</h2>
+                    <div v-for="(exp, index) in cv.experiences" :key="index" class="item">
+                        <h4 contenteditable="true" @input="updateField('experiences[' + index + '].title', $event)">{{
+                            exp.title
+                            }}</h4>
+                        <div class="time">
+                            <span contenteditable="true"
+                                @input="updateField('experiences[' + index + '].year', $event)">{{
+                                    exp.year }}</span>
+                            <span contenteditable="true"
+                                @input="updateField('experiences[' + index + '].company', $event)">{{
+                                    exp.company }}</span>
+                        </div>
+                        <div class="des" contenteditable="true"
+                            @input="updateField('experiences[' + index + '].description', $event)">{{ exp.description }}
+                        </div>
+                    </div>
+                    <h2 class="skills">SKILLS</h2>
+                    <ul>
+                        <li v-for="(skill, index) in cv.skills" :key="index" contenteditable="true"
+                            @input="updateField('skills[' + index + ']', $event)">{{ skill }}</li>
+                    </ul>
+                </div>
+                <div class="project">
+                    <h2>PROJECTS</h2>
+                    <div v-for="(project, index) in cv.projects" :key="index" class="item">
+                        <h4 contenteditable="true" @input="updateField('projects[' + index + '].title', $event)">{{
+                            project.title }}</h4>
+                        <div class="time">
+                            <span contenteditable="true" @input="updateField('projects[' + index + '].year', $event)">{{
+                                project.year }}</span>
+                        </div>
+                        <div class="web" contenteditable="true"
+                            @input="updateField('projects[' + index + '].website', $event)">
+                            {{ project.website }}
+                        </div>
+                        <div class="location" contenteditable="true"
+                            @input="updateField('projects[' + index + '].role', $event)">
+                            {{ project.role }}
+                        </div>
+                        <div class="des" contenteditable="true"
+                            @input="updateField('projects[' + index + '].description', $event)">
+                            {{ project.description }}
+                            <ul>
+                                <li v-for="(item, i) in project.tasks" :key="i" contenteditable="true"
+                                    @input="updateField('projects[' + index + '].tasks[' + i + ']', $event)">
+                                    {{ item }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center my-5">
+                <button @click="saveCV" class="me-3 btn btn-info">Lưu CV</button>
+                <button @click="downloadPDF()" class="btn btn-info">Tải CV về</button>
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-center align-items-center mt-5">
-        <button @click="saveCV" class="me-3 btn btn-info">Lưu CV</button>
-        <button @click="downloadPDF()" class="btn btn-info">Tải CV về</button>
-    </div>
+
 </template>
 
 
