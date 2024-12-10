@@ -261,9 +261,6 @@ onMounted(() => {
 
 </template>
 
-
-
-
 <style scoped>
 .avatar-wrapper {
     position: relative;
