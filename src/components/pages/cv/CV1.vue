@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, nextTick } from 'vue';
-import { database } from '../../firebase';
+import { database } from '../../../firebase';
 import { ref as dbRef, set, onValue } from 'firebase/database';
 import { useRouter, useRoute } from 'vue-router';
 import html2canvas from 'html2canvas';
