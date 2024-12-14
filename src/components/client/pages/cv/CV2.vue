@@ -1,3 +1,143 @@
+<script setup>
+import { ref, onMounted, nextTick } from 'vue';
+import { database } from '../../../../firebase';
+import { ref as dbRef, set, onValue, push } from 'firebase/database';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { toast } from 'vue3-toastify';
+
+const cv = ref({
+    avatarUrl: '',
+    name: 'John Doe',
+    specialize: 'Graphic Designer',
+    phone: '+84123456789',
+    email: 'johndoe@example.com',
+    website: 'www.johndoe.com',
+    location: 'HCMC, Vietnam',
+    birthday: '01/01/1990',
+    university: 'Design University',
+    introduction: 'Creative graphic designer with 5 years of experience...',
+    skills: ['Photoshop', 'Illustrator', 'InDesign', 'Sketch', 'Figma'],
+    projects: [
+        {
+            title: 'Brand Identity for ABC Corp',
+            year: '2022',
+            company: 'ABC Corp',
+            description: 'Designed the complete brand identity including logo, website, and business cards...',
+        },
+        {
+            title: 'UI Design for XYZ App',
+            year: '2021',
+            company: 'XYZ Ltd.',
+            description: 'Created a modern and user-friendly UI design for the XYZ mobile app...',
+        },
+    ],
+});
+
+const previewImage = ref('https://i.pinimg.com/564x/eb/57/6f/eb576ff023487bcb1fa3ad61ee7b23ee.jpg');
+const isHidden = ref(false);
+
+const updateField = (field, event) => {
+    cv.value[field] = event.target.innerText;
+};
+
+const uploadProfilePicture = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const imageBase64 = e.target.result;
+        cv.value.avatarUrl = imageBase64;
+        previewImage.value = imageBase64;
+        // saveCV();
+    };
+    reader.readAsDataURL(file);
+};
+
+const userId = ref('');
+
+const saveCV = () => {
+    const userString = localStorage.getItem('user');
+    if (userString) {
+        const user = JSON.parse(userString); // Chuyển chuỗi JSON thành đối tượng
+        userId.value = user.userId; // Truy cập userId
+        console.log('User ID:', userId.value);
+    } else {
+        console.error('Không tìm thấy thông tin người dùng trong localStorage.');
+        return;
+    }
+
+    const userCVRef = dbRef(database, `cv`); // Đường dẫn nhánh của user
+    const newCvRef = push(userCVRef); // Tạo ID tự động cho CV
+
+    const cvData = {
+        ...cv.value,
+        cvId: newCvRef.key,          // Lưu ID tự động
+        userId: userId.value,        // Gắn thêm userId để dễ truy xuất
+        cvName: cv.value.cvName || "Mẫu CV Designer", // Tên CV mặc định nếu không nhập
+        createdAt: new Date().toISOString(), // Lưu thời gian tạo
+    };
+
+    set(newCvRef, cvData)
+        .then(() => {
+            toast.success('Lưu CV thành công!');
+        })
+        .catch((error) => {
+            toast.error('Lỗi khi lưu CV:', error);
+        });
+};
+
+const downloadPDF = async () => {
+    const element = document.querySelector('.cv-template');
+    isHidden.value = true;
+    await nextTick();
+    if (isHidden.value) {
+        console.log('Đã ẩn phần tử');
+    } else {
+        console.log('Phần tử vẫn hiển thị');
+    }
+
+    if (!element) {
+        console.error('Không tìm thấy phần tử CV để xuất PDF.');
+        return;
+    }
+
+    try {
+        const imgData = previewImage.value;
+        if (!imgData || !imgData.startsWith('data:image')) {
+            toast.error('Vui lòng chọn ảnh đại diện');
+            isHidden.value = false;
+
+            return;
+
+        }
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: null,
+        });
+
+        const ctx = canvas.getContext('2d');
+        ctx.globalCompositeOperation = 'destination-over';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const imgDataCanvas = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = 190;
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        pdf.addImage(imgDataCanvas, 'PNG', 10, 10, pdfWidth, pdfHeight);
+        pdf.save('CV_Designer.pdf');
+    } catch (error) {
+        console.error('Lỗi khi tạo PDF:', error);
+    }
+    isHidden.value = false;
+};
+
+</script>
+
 <template>
     <div class="container">
         <div class="page-inner">
@@ -63,142 +203,14 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center align-items-center my-5">
-                <button @click="saveCV" class="me-3 btn btn-info">Lưu CV</button>
+                <!-- <button @click="saveCV" class="me-3 btn btn-info">Lưu CV</button> -->
                 <button @click="downloadPDF()" class="btn btn-info">Tải CV về</button>
             </div>
         </div>
     </div>
 </template>
 
-<script setup>
-import { ref, onMounted, nextTick } from 'vue';
-import { database } from '../../../../firebase';
-import { ref as dbRef, set, onValue, push } from 'firebase/database';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { toast } from 'vue3-toastify';
 
-const cv = ref({
-    avatarUrl: '',
-    name: 'John Doe',
-    specialize: 'Graphic Designer',
-    phone: '+84123456789',
-    email: 'johndoe@example.com',
-    website: 'www.johndoe.com',
-    location: 'HCMC, Vietnam',
-    birthday: '01/01/1990',
-    university: 'Design University',
-    introduction: 'Creative graphic designer with 5 years of experience...',
-    skills: ['Photoshop', 'Illustrator', 'InDesign', 'Sketch', 'Figma'],
-    projects: [
-        {
-            title: 'Brand Identity for ABC Corp',
-            year: '2022',
-            company: 'ABC Corp',
-            description: 'Designed the complete brand identity including logo, website, and business cards...',
-        },
-        {
-            title: 'UI Design for XYZ App',
-            year: '2021',
-            company: 'XYZ Ltd.',
-            description: 'Created a modern and user-friendly UI design for the XYZ mobile app...',
-        },
-    ],
-});
-
-const previewImage = ref('https://i.pinimg.com/564x/eb/57/6f/eb576ff023487bcb1fa3ad61ee7b23ee.jpg');
-const isHidden = ref(false);
-
-const updateField = (field, event) => {
-    cv.value[field] = event.target.innerText;
-};
-
-const uploadProfilePicture = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const imageBase64 = e.target.result;
-        cv.value.avatarUrl = imageBase64;
-        previewImage.value = imageBase64;
-        saveCV();
-    };
-    reader.readAsDataURL(file);
-};
-
-const saveCV = () => {
-    const userString = localStorage.getItem('user');
-    if (userString) {
-        const user = JSON.parse(userString); // Chuyển chuỗi JSON thành đối tượng
-        userId.value = user.userId; // Truy cập userId
-        console.log('User ID:', userId.value);
-    } else {
-        console.error('Không tìm thấy thông tin người dùng trong localStorage.');
-        return;
-    }
-
-    const userCVRef = dbRef(database, `cv`); // Đường dẫn nhánh của user
-    const newCvRef = push(userCVRef); // Tạo ID tự động cho CV
-
-    const cvData = {
-        ...cv.value,
-        cvId: newCvRef.key,          // Lưu ID tự động
-        userId: userId.value,        // Gắn thêm userId để dễ truy xuất
-        cvName: cv.value.cvName || "Mẫu CV Designer", // Tên CV mặc định nếu không nhập
-        createdAt: new Date().toISOString(), // Lưu thời gian tạo
-    };
-
-    set(newCvRef, cvData)
-        .then(() => {
-            toast.success('Lưu CV thành công!');
-        })
-        .catch((error) => {
-            toast.error('Lỗi khi lưu CV:', error);
-        });
-};
-
-const downloadPDF = async () => {
-    const element = document.querySelector('.cv-template');
-    isHidden.value = true;
-    await nextTick();
-    if (isHidden.value) {
-        console.log('Đã ẩn phần tử');
-    } else {
-        console.log('Phần tử vẫn hiển thị');
-    }
-
-    if (!element) {
-        console.error('Không tìm thấy phần tử CV để xuất PDF.');
-        return;
-    }
-
-    try {
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: null,
-        });
-
-        const ctx = canvas.getContext('2d');
-        ctx.globalCompositeOperation = 'destination-over';
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        const imgDataCanvas = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const pdfWidth = 190;
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-        pdf.addImage(imgDataCanvas, 'PNG', 10, 10, pdfWidth, pdfHeight);
-        pdf.save('CV_Designer.pdf');
-    } catch (error) {
-        console.error('Lỗi khi tạo PDF:', error);
-    }
-    isHidden.value = false;
-};
-
-</script>
 
 <style scoped>
 .avatar-wrapper {

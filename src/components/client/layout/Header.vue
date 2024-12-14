@@ -24,10 +24,10 @@ const logout = () => {
 
 <template>
   <header class="header container-fluid">
-    <div class="logo">
+    <RouterLink to="/" class="logo">
       <!-- Logo hình ảnh -->
       <img src="./../../../assets/img/logo-new.png" alt="TopCV AI Logo" class="img-fluid" />
-    </div>
+    </RouterLink>
     <nav>
       <ul class="nav-list d-flex list-unstyled">
         <li><a href="#features">Tính năng</a></li>

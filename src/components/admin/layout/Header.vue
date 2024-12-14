@@ -10,8 +10,8 @@ const profileImage = ref('../assets/img/profile.jpg');
       // Lấy thông tin từ localStorage và cập nhật giá trị các biến
       const storedUser = JSON.parse(localStorage.getItem('user'));
       if (storedUser) {
-        username.value = storedUser.username || 'User';
-        profileImage.value = storedUser.avatar || '../assets/img/profile.jpg';
+        username.value = storedUser.name || 'User';
+        profileImage.value = storedUser.profilePicture || '../assets/img/profile.jpg';
       }
     });
 function logout() {

@@ -19,9 +19,5 @@ provide('authState', authState);
 </script>
 
 <template>
-  <!-- <CV1></CV1> -->
-  <IndexClient></IndexClient>
+  <router-view />
 </template>
-
-
-

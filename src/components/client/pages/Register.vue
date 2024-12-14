@@ -1,11 +1,11 @@
 <script setup>
 import { ref, reactive, computed } from 'vue';
 import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { getDatabase, ref as dbRef, push, query, orderByChild, equalTo, get } from 'firebase/database';
+import { getDatabase, ref as dbRef, push, query, orderByChild, equalTo, get, set } from 'firebase/database';
 import { initializeApp } from 'firebase/app';
 import { toast } from 'vue3-toastify';
 import { useRouter } from 'vue-router';
-import { required, email, minLength, helpers  } from '@vuelidate/validators';
+import { required, email, minLength, helpers } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
 
 // Firebase config
@@ -41,7 +41,7 @@ const rules = computed(() => ({
   name: { required },
   email: { required, email },
   password: { required, minLength: minLength(6) },
-  confirmPassword: { required,sameAsPassword  },
+  confirmPassword: { required, sameAsPassword },
 }));
 
 const v$ = useVuelidate(rules, form);
@@ -60,30 +60,7 @@ const handleFileUpload = (event) => {
   imagePreview.value = URL.createObjectURL(file);
 };
 
-// Save user data
-const saveUserData = (userId, fileUrl = null) => {
-  const userData = {
-    userId,
-    name: form.name,
-    email: form.email,
-    password: form.password,
-    ...(fileUrl && { profilePicture: fileUrl }),
-  };
 
-  push(dbRef(database, 'users'), userData)
-    .then(() => {
-      toast.success('Đăng ký thành công!');
-      Object.keys(form).forEach((key) => (form[key] = key === 'file' ? null : ''));
-      imagePreview.value = null;
-      uploadProgress.value = null;
-      router.push('/login');
-    })
-    .catch((error) => {
-      toast.error('Lỗi: ' + error.message);
-    });
-};
-
-// Handle form submission
 const handleSubmit = async () => {
   v$.value.$touch(); // Trigger validation
   if (v$.value.$invalid) {
@@ -92,6 +69,7 @@ const handleSubmit = async () => {
   }
 
   try {
+    // Kiểm tra xem email đã tồn tại chưa
     const emailQuery = query(dbRef(database, 'users'), orderByChild('email'), equalTo(form.email));
     const snapshot = await get(emailQuery);
 
@@ -100,9 +78,11 @@ const handleSubmit = async () => {
       return;
     }
 
+    // Tạo khóa mới cho người dùng và sử dụng chính key đó làm userId
     const newUserRef = push(dbRef(database, 'users'));
-    const userId = newUserRef.key;
+    const userId = newUserRef.key; // Sử dụng key làm userId
 
+    // Nếu có file, tải lên Firebase Storage
     if (form.file) {
       const fileRef = storageRef(storage, `uploads/${form.file.name}`);
       const uploadTask = uploadBytesResumable(fileRef, form.file);
@@ -116,19 +96,50 @@ const handleSubmit = async () => {
           toast.error('Lỗi tải tệp: ' + error.message);
         },
         () => {
+          // Lấy URL ảnh và lưu thông tin người dùng vào Firebase
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            saveUserData(userId, downloadURL);
+            saveUserData(userId, downloadURL); // Lưu userId giống key và URL ảnh
           });
         }
       );
     } else {
-      saveUserData(userId);
+      saveUserData(userId); // Nếu không có file, chỉ lưu thông tin người dùng
     }
   } catch (error) {
     toast.error('Đã xảy ra lỗi: ' + error.message);
   }
 };
+
+// Cập nhật hàm lưu thông tin người dùng để sử dụng userId làm key
+const saveUserData = (userId, fileUrl = null) => {
+  const userData = {
+    userId, // Gán chính key làm userId
+    name: form.name,
+    email: form.email,
+    password: form.password,
+    ...(fileUrl && { profilePicture: fileUrl }), // Nếu có ảnh đại diện, lưu lại
+  };
+
+  // Lưu người dùng vào Firebase Realtime Database với key là userId
+  const userRef = dbRef(database, 'users/' + userId); // Gán key làm đường dẫn
+  set(userRef, userData)
+    .then(() => {
+      toast.success('Đăng ký thành công!');
+      Object.keys(form).forEach((key) => (form[key] = key === 'file' ? null : ''));
+      imagePreview.value = null;
+      uploadProgress.value = null;
+      router.push('/login');
+    })
+    .catch((error) => {
+      toast.error('Lỗi: ' + error.message);
+    });
+};
+
+
+
+
 </script>
+
 
 
 <template>
@@ -137,26 +148,30 @@ const handleSubmit = async () => {
     <form @submit.prevent="handleSubmit">
       <div class="mb-3">
         <label for="name" class="form-label">Họ Tên</label>
-        <input type="text" id="name" v-model="form.name" :class="{ 'is-invalid': v$.name.$error }" class="form-control" />
+        <input type="text" id="name" v-model="form.name" :class="{ 'is-invalid': v$.name.$error }"
+          class="form-control" />
         <div v-if="v$.name.$error" class="text-danger">Họ tên là bắt buộc!</div>
       </div>
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" id="email" v-model="form.email" :class="{ 'is-invalid': v$.email.$error }" class="form-control" />
+        <input type="email" id="email" v-model="form.email" :class="{ 'is-invalid': v$.email.$error }"
+          class="form-control" />
         <div v-if="v$.email.$error" class="text-danger">
           <div v-if="v$.email.$invalid">Email không hợp lệ!</div>
         </div>
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Mật Khẩu</label>
-        <input type="password" id="password" v-model="form.password" :class="{ 'is-invalid': v$.password.$error }" class="form-control" />
+        <input type="password" id="password" v-model="form.password" :class="{ 'is-invalid': v$.password.$error }"
+          class="form-control" />
         <div v-if="v$.password.$error" class="text-danger">
           <div v-if="v$.password.$invalid">Mật khẩu phải có ít nhất 6 ký tự!</div>
         </div>
       </div>
       <div class="mb-3">
         <label for="confirmPassword" class="form-label">Xác Nhận Mật Khẩu</label>
-        <input type="password" id="confirmPassword" v-model="form.confirmPassword" :class="{ 'is-invalid': v$.confirmPassword.$error }" class="form-control" />
+        <input type="password" id="confirmPassword" v-model="form.confirmPassword"
+          :class="{ 'is-invalid': v$.confirmPassword.$error }" class="form-control" />
         <div v-if="v$.confirmPassword.$error" class="text-danger">
           <div v-if="v$.confirmPassword.$invalid">Mật khẩu xác nhận không khớp!</div>
         </div>
@@ -183,23 +198,28 @@ const handleSubmit = async () => {
 .progress-bar {
   height: 10px;
   border-radius: 5px;
-  background-color: #e0e0e0; /* Light gray background color */
+  background-color: #e0e0e0;
+  /* Light gray background color */
   transition: background-color 0.3s ease;
 }
 
 progress[value] {
-  background-color: #e0e0e0; /* Set the background color of the progress bar */
+  background-color: #e0e0e0;
+  /* Set the background color of the progress bar */
 }
 
 progress[value]::-webkit-progress-bar {
-  background-color: #e0e0e0; /* Light gray background for WebKit browsers */
+  background-color: #e0e0e0;
+  /* Light gray background for WebKit browsers */
 }
 
 progress[value]::-webkit-progress-value {
-  background-color: #002f6c; /* Dark blue color for the progress bar */
+  background-color: #002f6c;
+  /* Dark blue color for the progress bar */
 }
 
 progress[value]::-moz-progress-bar {
-  background-color: #002f6c; /* Dark blue color for Firefox */
+  background-color: #002f6c;
+  /* Dark blue color for Firefox */
 }
 </style>

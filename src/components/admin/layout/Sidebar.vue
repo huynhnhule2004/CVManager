@@ -54,18 +54,34 @@ import { RouterLink } from 'vue-router';
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#base">
                   <i class="fas fa-layer-group"></i>
-                  <p>Template</p>
+                  <p>CV</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="base">
                   <ul class="nav nav-collapse">
                     <li>
-                      <RouterLink to="/templates">
+                      <RouterLink to="/admin/cv">
+                        <span class="sub-item">Danh sách</span>
+                      </RouterLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#base3">
+                  <i class="fas fa-layer-group"></i>
+                  <p>Người dùng</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="base3">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <RouterLink to="/admin/users">
                         <span class="sub-item">Danh sách</span>
                       </RouterLink>
                     </li>
                     <li>
-                      <RouterLink to="/templates/add">
+                      <RouterLink to="/admin/add">
                         <span class="sub-item">Thêm mới</span>
                       </RouterLink>
                     </li>

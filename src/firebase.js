@@ -1,9 +1,8 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, set  } from 'firebase/database';
-// import { getStorage } from "firebase/storage";
-// import { getFirestore } from "firebase/firestore"; // For Firestore (db)
-// import { getAuth } from "firebase/auth";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+// firebase.js
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, set, push, onValue, update, get  } from 'firebase/database';
+import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+
 const firebaseConfig = {
   apiKey: "AIzaSyAJSlLv3-LxG2FvXATzivaZlrKKTyMTceU",
   authDomain: "vuejs-cb0f7.firebaseapp.com",
@@ -19,4 +18,4 @@ const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 const database = getDatabase(app);
 
-export { storage, ref, uploadBytesResumable, getDownloadURL, database, set  };
+export { storage, storageRef, uploadBytesResumable, getDownloadURL, database, ref, set, push, onValue, update, get };  // Đảm bảo export push ở đây
