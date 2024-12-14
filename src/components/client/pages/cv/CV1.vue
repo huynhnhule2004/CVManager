@@ -157,6 +157,8 @@ const downloadPDF = async () => {
         pdf.addImage(imgDataCanvas, 'PNG', 10, 10, pdfWidth, pdfHeight);
 
         pdf.save('CV.pdf');
+        saveCV();
+
     } catch (error) {
         console.error('Lỗi khi tạo PDF:', error);
     }
