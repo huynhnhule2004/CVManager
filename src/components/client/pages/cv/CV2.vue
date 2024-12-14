@@ -81,7 +81,8 @@ const saveCV = () => {
 
     set(newCvRef, cvData)
         .then(() => {
-            toast.success('Lưu CV thành công!');
+            console.log('User ID:', userId.value);
+            // toast.success('Lưu CV thành công!');
         })
         .catch((error) => {
             toast.error('Lỗi khi lưu CV:', error);
@@ -158,22 +159,26 @@ const downloadPDF = async () => {
                     <ul class="contact">
                         <li>
                             <span>P</span>
-                            <p class="d-inline-block m-0" contenteditable="true" @input="updateField('phone', $event)">{{ cv.phone }}</p>
+                            <p class="d-inline-block m-0" contenteditable="true" @input="updateField('phone', $event)">
+                                {{ cv.phone }}</p>
                         </li>
                         <li>
                             <span>E</span>
-                            <p class="d-inline-block m-0" contenteditable="true" @input="updateField('email', $event)">{{ cv.email }}</p>
+                            <p class="d-inline-block m-0" contenteditable="true" @input="updateField('email', $event)">
+                                {{ cv.email }}</p>
                         </li>
                         <li>
                             <span>W</span>
-                            <p class="d-inline-block m-0" contenteditable="true" @input="updateField('website', $event)">{{ cv.website }}</p>
+                            <p class="d-inline-block m-0" contenteditable="true"
+                                @input="updateField('website', $event)">{{ cv.website }}</p>
                         </li>
                     </ul>
                 </div>
                 <div class="info">
                     <ul>
                         <li>
-                            From <b contenteditable="true" @input="updateField('location', $event)">{{ cv.location }}</b>
+                            From <b contenteditable="true" @input="updateField('location', $event)">{{ cv.location
+                                }}</b>
                         </li>
                         <li contenteditable="true" @input="updateField('birthday', $event)">{{ cv.birthday }}</li>
                         <li contenteditable="true" @input="updateField('university', $event)">{{ cv.university }}</li>
@@ -193,12 +198,17 @@ const downloadPDF = async () => {
                 <div class="projects">
                     <h2>PROJECTS</h2>
                     <div v-for="(project, index) in cv.projects" :key="index" class="item">
-                        <h4 contenteditable="true" @input="updateField('projects[' + index + '].title', $event)">{{ project.title }}</h4>
+                        <h4 contenteditable="true" @input="updateField('projects[' + index + '].title', $event)">{{
+                            project.title }}</h4>
                         <div class="time">
-                            <span contenteditable="true" @input="updateField('projects[' + index + '].year', $event)">{{ project.year }}</span>
-                            <span contenteditable="true" @input="updateField('projects[' + index + '].company', $event)">{{ project.company }}</span>
+                            <span contenteditable="true" @input="updateField('projects[' + index + '].year', $event)">{{
+                                project.year }}</span>
+                            <span contenteditable="true"
+                                @input="updateField('projects[' + index + '].company', $event)">{{ project.company
+                                }}</span>
                         </div>
-                        <div class="des" contenteditable="true" @input="updateField('projects[' + index + '].description', $event)">
+                        <div class="des" contenteditable="true"
+                            @input="updateField('projects[' + index + '].description', $event)">
                             {{ project.description }}
                         </div>
                     </div>

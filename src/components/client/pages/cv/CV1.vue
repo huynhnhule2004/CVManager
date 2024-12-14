@@ -100,8 +100,8 @@ const saveCV = () => {
 
     set(newCvRef, cvData)
         .then(() => {
-            toast.success('Lưu CV thành công!');
-            // console.log('CV đã được lưu thành công với ID:', newCvRef.key);
+            // toast.success('Lưu CV thành công!');
+            console.log('CV đã được lưu thành công với ID:', newCvRef.key);
         })
         .catch((error) => {
             toast.error('Lỗi khi lưu CV:', error);
