@@ -147,8 +147,8 @@ router.beforeEach((to, from, next) => {
     if (user && user.role === "admin") {
       next(); // Cho phép tiếp tục nếu là admin
     } else {
-      toast.error("Bạn không có quyền truy cập!");
-      next("/login"); // Chuyển hướng về trang chủ
+      router.push("/"); // Chuyển hướng về trang chủ
+      localStorage.setItem("auth", "Bạn không có quyền truy cập!");
     }
   } else {
     next(); // Cho phép các route khác

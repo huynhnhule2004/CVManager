@@ -6,12 +6,17 @@ import { inject } from 'vue';
 const authState = inject('authState');
 // Tạo biến trạng thái
 const name = ref('');
+// const isAdmin = ref(false);
 
+// Kiểm tra user và vai trò trong localStorage
 // Kiểm tra trạng thái đăng nhập khi component được khởi tạo
 onMounted(() => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   if (storedUser) {
     name.value = storedUser.name; // Chỉ lấy tên người dùng
+  }
+  if (storedUser && storedUser.role === 'admin') {
+    authState.isAdmin = true;
   }
 });
 
@@ -43,7 +48,13 @@ const logout = () => {
               Hi, {{ authState.user.name }}
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><button @click="logout" class="dropdown-item">Đăng xuất</button></li>
+              <!-- Chỉ hiển thị mục "Đăng nhập admin" nếu role là admin -->
+              <li v-if="authState.isAdmin">
+                <RouterLink to="/admin" class="dropdown-item text-dark">Đăng nhập admin</RouterLink>
+              </li>
+              <li>
+                <button @click="logout" class="dropdown-item">Đăng xuất</button>
+              </li>
             </ul>
           </div>
 

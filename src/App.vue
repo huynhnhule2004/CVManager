@@ -11,10 +11,12 @@ import IndexClient from './components/client/layout/IndexClient.vue';
 // Tạo trạng thái toàn cục
 const authState = reactive({
   user: null, // Lưu thông tin người dùng
+  isAdmin: false,
 });
 
 // Cung cấp trạng thái cho các component con
 provide('authState', authState);
+
 
 </script>
 

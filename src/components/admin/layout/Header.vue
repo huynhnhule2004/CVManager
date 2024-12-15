@@ -1,30 +1,25 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { inject } from 'vue';
 
 // Khởi tạo các biến trạng thái
 
 const username = ref('User');
 const profileImage = ref('../assets/img/profile.jpg');
+const authState = inject('authState');
 
-    onMounted(() => {
-      // Lấy thông tin từ localStorage và cập nhật giá trị các biến
-      const storedUser = JSON.parse(localStorage.getItem('user'));
-      if (storedUser) {
+onMounted(() => {
+    // Lấy thông tin từ localStorage và cập nhật giá trị các biến
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
         username.value = storedUser.name || 'User';
         profileImage.value = storedUser.profilePicture || '../assets/img/profile.jpg';
-      }
-    });
-function logout() {
-  // Xóa thông tin người dùng trong localStorage
-  localStorage.removeItem('user');
-
-  // Cập nhật các biến trạng thái trong Vue nếu cần
-  username.value = 'Admin';
-  profileImage.value = '../assets/img/profile.jpg';
-
-  // Tải lại trang
-  window.location.reload();
-}
+    }
+});
+const logout = () => {
+  localStorage.removeItem('user'); // Xóa thông tin khỏi localStorage
+  authState.user = null; // Xóa thông tin trong trạng thái toàn cục
+};
 
 </script>
 <template>
@@ -33,7 +28,8 @@ function logout() {
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
                 <a href="index.html" class="logo">
-                    <img src="../assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+                    <img src="../assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
+                        height="20" />
                 </a>
                 <div class="nav-toggle">
                     <button class="btn btn-toggle toggle-sidebar">
@@ -290,8 +286,7 @@ function logout() {
                                 <li>
                                     <div class="user-box">
                                         <div class="avatar-lg">
-                                            <img :src="profileImage" alt="image profile"
-                                                class="avatar-img rounded" />
+                                            <img :src="profileImage" alt="image profile" class="avatar-img rounded" />
                                         </div>
                                         <div class="u-text">
                                             <h4>{{ username }}</h4>
@@ -309,6 +304,7 @@ function logout() {
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#">Account Setting</a>
                                     <div class="dropdown-divider"></div>
+                                    <RouterLink to="/" class="dropdown-item text-dark">Client</RouterLink>
                                     <a class="dropdown-item" href="#" @click="logout">Logout</a>
                                 </li>
                             </div>
