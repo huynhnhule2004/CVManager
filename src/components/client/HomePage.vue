@@ -50,6 +50,16 @@ const cvItems = [
         title: "Mẫu CV Data Scientist",
         link: "/cv12",
     },
+    { image: '/src/assets/img/2.png', title: 'Mẫu CV Simple 01', link: '/cv13' },
+    { image: '/src/assets/img/cv14.png', title: 'Mẫu CV Simple 02', link: '/cv14' },
+    { image: '/src/assets/img/13.png', title: 'Mẫu CV Marketing 01', link: '/cv15' },
+    { image: '/src/assets/img/cv16.png', title: 'Mẫu CV Chi tiết', link: '/cv16' },
+    { image: '/src/assets/img/cv17.png', title: 'Mẫu CV Designer 02', link: '/cv17' },
+    { image: '/src/assets/img/18.png', title: 'Mẫu CV Designer 03', link: '/cv18' },
+    { image: '/src/assets/img/19.png', title: 'Mẫu CV Chi tiết 02', link: '/cv19' },
+    { image: '/src/assets/img/cv20.png', title: 'Mẫu CV Kế toán', link: '/cv20' },
+    { image: '/src/assets/img/cv21.png', title: 'Mẫu CV Ngân hàng', link: '/cv21' },
+    { image: '/src/assets/img/cv22.png', title: 'Mẫu CV Bác sĩ', link: '/cv22' },
 ];
 
 const currentPage = ref(1);

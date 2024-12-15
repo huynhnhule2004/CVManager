@@ -80,6 +80,13 @@ const saveCV = () => {
 
 
 const downloadPDF = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+        // Lưu trạng thái thông báo
+        localStorage.setItem("toastMessage", "Bạn cần đăng nhập để tải CV");
+        router.push('/login');
+        return;
+    }
     const element = document.querySelector('.cv-template');
     isHidden.value = true;
     await nextTick();
@@ -253,7 +260,7 @@ onMounted(() => {
                 </div>
             </div>
             <div class="d-flex justify-content-center align-items-center my-5">
-                <button @click="saveCV" class="me-3 btn btn-info">Lưu CV</button>
+                <!-- <button @click="saveCV" class="me-3 btn btn-info">Lưu CV</button> -->
                 <button @click="downloadPDF()" class="btn btn-info">Tải CV về</button>
             </div>
         </div>
