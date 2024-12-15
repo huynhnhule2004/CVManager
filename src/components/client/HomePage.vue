@@ -1,5 +1,6 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { toast } from 'vue3-toastify';
 
 const cvItems = [
     { image: '/src/assets/img/CV1.png', title: 'Mẫu CV IT 01', link: '/cv1' },
@@ -34,6 +35,13 @@ const changePage = (page) => {
     currentPage.value = page;
   }
 };
+onMounted(() => {
+    const toastMessage = localStorage.getItem('loginSuccess');
+    if (toastMessage) {
+        toast.success(toastMessage); // Hiển thị thông báo
+        localStorage.removeItem('loginSuccess'); // Xóa sau khi hiển thị
+    }
+});
 </script>
 <template>
     <div class="container">

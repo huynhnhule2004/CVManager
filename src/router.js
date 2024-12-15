@@ -148,7 +148,7 @@ router.beforeEach((to, from, next) => {
       next(); // Cho phép tiếp tục nếu là admin
     } else {
       toast.error("Bạn không có quyền truy cập!");
-      next("/"); // Chuyển hướng về trang chủ
+      next("/login"); // Chuyển hướng về trang chủ
     }
   } else {
     next(); // Cho phép các route khác

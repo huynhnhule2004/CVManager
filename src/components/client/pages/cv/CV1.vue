@@ -112,6 +112,13 @@ const saveCV = () => {
 
 
 const downloadPDF = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+        // Lưu trạng thái thông báo
+        localStorage.setItem("toastMessage", "Bạn cần đăng nhập để tải CV");
+        router.push('/login');
+        return;
+    }
     const element = document.querySelector('.cv-template');
     isHidden.value = true;
     await nextTick();
@@ -171,18 +178,18 @@ function goBack() {
 
 
 // Load dữ liệu từ Firebase khi khởi động
-onMounted(() => {
-    const cvRef = dbRef(database, 'cv/user2');
-    onValue(cvRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-            cv.value = data;
-            if (data.avatarUrl) {
-                previewImage.value = data.avatarUrl;
-            }
-        }
-    });
-});
+// onMounted(() => {
+//     const cvRef = dbRef(database, 'cv/user2');
+//     onValue(cvRef, (snapshot) => {
+//         const data = snapshot.val();
+//         if (data) {
+//             cv.value = data;
+//             if (data.avatarUrl) {
+//                 previewImage.value = data.avatarUrl;
+//             }
+//         }
+//     });
+// });
 
 </script>
 <template>
@@ -201,7 +208,7 @@ onMounted(() => {
                     <h1 contenteditable="true" @input="updateField('name', $event)">{{ cv.name }}</h1>
                     <div class="specialize" contenteditable="true" @input="updateField('specialize', $event)">{{
                         cv.specialize
-                        }}</div>
+                    }}</div>
                     <ul class="contact">
                         <li>
                             <span>P</span>
@@ -242,7 +249,7 @@ onMounted(() => {
                     <div v-for="(exp, index) in cv.experiences" :key="index" class="item">
                         <h4 contenteditable="true" @input="updateField('experiences[' + index + '].title', $event)">{{
                             exp.title
-                            }}</h4>
+                        }}</h4>
                         <div class="time">
                             <span contenteditable="true"
                                 @input="updateField('experiences[' + index + '].year', $event)">{{

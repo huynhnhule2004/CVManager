@@ -5,6 +5,8 @@ import { ref as dbRef, set, onValue, push } from 'firebase/database';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { toast } from 'vue3-toastify';
+import { useRouter, useRoute } from 'vue-router';
+
 
 const cv = ref({
     avatarUrl: '',
@@ -33,6 +35,7 @@ const cv = ref({
         },
     ],
 });
+const router = useRouter();
 
 const previewImage = ref('https://i.pinimg.com/564x/eb/57/6f/eb576ff023487bcb1fa3ad61ee7b23ee.jpg');
 const isHidden = ref(false);
@@ -90,6 +93,13 @@ const saveCV = () => {
 };
 
 const downloadPDF = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+        // Lưu trạng thái thông báo
+        localStorage.setItem("toastMessage", "Bạn cần đăng nhập để tải CV");
+        router.push('/login');
+        return;
+    }
     const element = document.querySelector('.cv-template');
     isHidden.value = true;
     await nextTick();

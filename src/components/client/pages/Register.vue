@@ -124,11 +124,12 @@ const saveUserData = (userId, fileUrl = null) => {
   const userRef = dbRef(database, 'users/' + userId); // Gán key làm đường dẫn
   set(userRef, userData)
     .then(() => {
-      toast.success('Đăng ký thành công!');
+      // toast.success('Đăng ký thành công!');
       Object.keys(form).forEach((key) => (form[key] = key === 'file' ? null : ''));
       imagePreview.value = null;
       uploadProgress.value = null;
       router.push('/login');
+      localStorage.setItem("registerSuccess", "Đăng ký thành công!");
     })
     .catch((error) => {
       toast.error('Lỗi: ' + error.message);

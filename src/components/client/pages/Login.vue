@@ -1,5 +1,5 @@
 <script setup>
-import { ref, inject, reactive, computed } from 'vue';
+import { ref, inject, reactive, computed, onMounted } from 'vue';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref as dbRef, query, orderByChild, equalTo, get } from 'firebase/database';
 import { toast } from 'vue3-toastify';
@@ -71,7 +71,8 @@ const handleLogin = async () => {
 
                 // Redirect to homepage
                 router.push('/');
-                toast.success(`Chào mừng ${userData.name}!`);
+                localStorage.setItem("loginSuccess", "Đăng nhập thành công!");
+                // toast.success(`Chào mừng ${userData.name}!`);
             } else {
                 toast.error('Mật khẩu không chính xác!');
             }
@@ -83,6 +84,19 @@ const handleLogin = async () => {
         toast.error('Đã xảy ra lỗi, vui lòng thử lại sau.');
     }
 };
+
+onMounted(() => {
+    const toastMessage = localStorage.getItem('toastMessage');
+    const register = localStorage.getItem('registerSuccess');
+    if (toastMessage) {
+        toast.error(toastMessage); // Hiển thị thông báo
+        localStorage.removeItem('toastMessage'); // Xóa sau khi hiển thị
+    }
+    if (register) {
+        toast.success(register); // Hiển thị thông báo
+        localStorage.removeItem('registerSuccess'); // Xóa sau khi hiển thị
+    }
+});
 </script>
 
 <template>
@@ -92,26 +106,16 @@ const handleLogin = async () => {
             <form @submit.prevent="handleLogin">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input
-                        type="email"
-                        class="form-control"
-                        id="email"
-                        v-model="form.email"
-                        :class="{ 'is-invalid': v$.email.$error }"
-                    />
+                    <input type="email" class="form-control" id="email" v-model="form.email"
+                        :class="{ 'is-invalid': v$.email.$error }" />
                     <span class="text-danger" v-if="v$.email.$error">
                         Vui lòng nhập email hợp lệ!
                     </span>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Mật Khẩu</label>
-                    <input
-                        type="password"
-                        class="form-control"
-                        id="password"
-                        v-model="form.password"
-                        :class="{ 'is-invalid': v$.password.$error }"
-                    />
+                    <input type="password" class="form-control" id="password" v-model="form.password"
+                        :class="{ 'is-invalid': v$.password.$error }" />
                     <span class="text-danger" v-if="v$.password.$error">
                         Vui lòng nhập mật khẩu!
                     </span>
