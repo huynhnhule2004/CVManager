@@ -221,9 +221,6 @@ const downloadPDF = async () => {
         </div>
     </div>
 </template>
-
-
-
 <style scoped>
 .avatar-wrapper {
     position: relative;

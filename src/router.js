@@ -43,6 +43,56 @@ const routes = [
         component: () => import("./components/client/pages/cv/CV2.vue"),
         name: "cv2",
       },
+      {
+        path: "cv3",
+        component: () => import("./components/client/pages/cv/CV3.vue"),
+        name: "cv3",
+      },
+      {
+        path: "cv4",
+        component: () => import("./components/client/pages/cv/CV4.vue"),
+        name: "cv4",
+      },
+      {
+        path: "cv5",
+        component: () => import("./components/client/pages/cv/CV5.vue"),
+        name: "cv5",
+      },
+      {
+        path: "cv6",
+        component: () => import("./components/client/pages/cv/CV6.vue"),
+        name: "cv6",
+      },
+      {
+        path: "cv7",
+        component: () => import("./components/client/pages/cv/CV7.vue"),
+        name: "cv7",
+      },
+      {
+        path: "cv8",
+        component: () => import("./components/client/pages/cv/CV8.vue"),
+        name: "cv8",
+      },
+      {
+        path: "cv9",
+        component: () => import("./components/client/pages/cv/CV9.vue"),
+        name: "cv9",
+      },
+      {
+        path: "cv10",
+        component: () => import("./components/client/pages/cv/CV10.vue"),
+        name: "cv10",
+      },
+      {
+        path: "cv11",
+        component: () => import("./components/client/pages/cv/CV11.vue"),
+        name: "cv11",
+      },
+      {
+        path: "cv12",
+        component: () => import("./components/client/pages/cv/CV12.vue"),
+        name: "cv12",
+      },
     ],
   },
   {

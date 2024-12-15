@@ -4,18 +4,16 @@ import { ref, computed } from 'vue';
 const cvItems = [
     { image: '/src/assets/img/CV1.png', title: 'Mẫu CV IT 01', link: '/cv1' },
     { image: '/src/assets/img/CV2.png', title: 'Mẫu CV Designer 01', link: '/cv2' },
-    // { image: '/src/assets/img/CV1.png', title: 'Mẫu CV IT 02', link: '/cv3' },
-    // { image: '/src/assets/img/CV2.png', title: 'Mẫu CV Designer 02', link: '/cv4' },
-    // { image: '/src/assets/img/CV1.png', title: 'Mẫu CV IT 03', link: '/cv5' },
-    // { image: '/src/assets/img/CV2.png', title: 'Mẫu CV Designer 03', link: '/cv6' },
-    // { image: '/src/assets/img/CV1.png', title: 'Mẫu CV IT 04', link: '/cv7' },
-    // { image: '/src/assets/img/CV2.png', title: 'Mẫu CV Designer 04', link: '/cv8' },
-    // { image: '/src/assets/img/CV1.png', title: 'Mẫu CV IT 05', link: '/cv9' },
-    // { image: '/src/assets/img/CV2.png', title: 'Mẫu CV Designer 05', link: '/cv10' },
-    // { image: '/src/assets/img/CV1.png', title: 'Mẫu CV IT 06', link: '/cv11' },
-    // { image: '/src/assets/img/CV2.png', title: 'Mẫu CV Designer 06', link: '/cv12' },
-    // { image: '/src/assets/img/CV1.png', title: 'Mẫu CV IT 07', link: '/cv13' },
-    // { image: '/src/assets/img/CV2.png', title: 'Mẫu CV Designer 07', link: '/cv14' }
+    { image: '/src/assets/img/CV3.png', title: 'Mẫu CV IT 02', link: '/cv3' },
+    { image: '/src/assets/img/CV4.png', title: 'Mẫu CV Ngôn ngữ học', link: '/cv4' },
+    { image: '/src/assets/img/CV5.png', title: 'Mẫu CV Marketing', link: '/cv5' },
+    { image: '/src/assets/img/CV6.png', title: 'Mẫu CV Data Scientist', link: '/cv6' },
+    { image: '/src/assets/img/CV7.png', title: 'Mẫu CV Content Writer', link: '/cv7' },
+    { image: '/src/assets/img/CV8.png', title: 'Mẫu CV Cybersecurity', link: '/cv8' },
+    { image: '/src/assets/img/CV9.png', title: 'Mẫu CV Project Manager', link: '/cv9' },
+    { image: '/src/assets/img/CV10.png', title: 'Mẫu CV Engineer', link: '/cv10' },
+    { image: '/src/assets/img/CV11.png', title: 'Mẫu CV Analyst', link: '/cv11' },
+    { image: '/src/assets/img/CV12.png', title: 'Mẫu CV Data Scientist', link: '/cv12' },
 ];
 
 const currentPage = ref(1);
