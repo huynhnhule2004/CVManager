@@ -94,7 +94,7 @@ const saveCV = () => {
         ...cv.value,
         cvId: newCvRef.key,          // Lưu ID tự động
         userId: userId.value,              // Gắn thêm userId để dễ truy xuất
-        cvName: cv.value.cvName || "Mẫu CV IT 01", // Tên CV mặc định nếu không nhập
+        cvName: cv.value.cvName || "Mẫu CV Data Scientist", // Tên CV mặc định nếu không nhập
         createdAt: new Date().toISOString(), // Lưu thời gian tạo
     };
 
@@ -112,6 +112,13 @@ const saveCV = () => {
 
 
 const downloadPDF = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+        // Lưu trạng thái thông báo
+        localStorage.setItem("toastMessage", "Bạn cần đăng nhập để tải CV");
+        router.push('/login');
+        return;
+    }
     const element = document.querySelector('.cv-template');
     isHidden.value = true;
     await nextTick();
@@ -187,6 +194,7 @@ onMounted(() => {
 </script>
 <template>
     <div class="cv-container">
+        <div class="cv-template">
         <!-- Left Section -->
         <div class="left-section">
             <div class="avatar-wrapper">
@@ -260,6 +268,7 @@ onMounted(() => {
                 </ul>
             </div>
         </div>
+        </div>
     </div>
     <div class="cv-footer">
         <button @click="downloadPDF()" class="btn-download">Tải CV</button>
@@ -270,7 +279,7 @@ onMounted(() => {
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    /* background-color: #f4f4f4; */
     padding: 20px;
     display: flex;
     justify-content: center;
@@ -337,6 +346,18 @@ body {
     margin-bottom: 40px;
     align-items: center;
 }
+.cv-template {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    line-height: 1.5;
+    flex-grow: 1;
+
+}
 .contact-info ul {
     list-style: none;
     padding: 0;
@@ -393,26 +414,10 @@ body {
     font-weight: bold;
 }
 
-.timeline-item ul {
-    list-style: none;
-    margin-left: 0;
-    padding-left: 0;
+.timeline:before {
+    display: none !important;
 }
 
-.timeline-item ul li {
-    font-size: 14px;
-    margin-bottom: 5px;
-    position: relative;
-    padding-left: 15px;
-}
-
-.timeline-item ul li::before {
-    content: '\2022';
-    position: absolute;
-    left: 0;
-    color: #5a4231;
-    font-size: 18px;
-}
 .cv-footer {
     text-align: center;
     margin: 30px;
@@ -422,7 +427,7 @@ body {
     font-size: 1.2rem;
     padding: 12px 30px;
     background-color: #007BFF;
-    color: #fff;
+    /* color: #fff; */
     border: none;
     border-radius: 5px;
     cursor: pointer;

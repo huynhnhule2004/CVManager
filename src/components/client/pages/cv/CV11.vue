@@ -88,7 +88,7 @@ const saveCV = () => {
         ...cv.value,
         cvId: newCvRef.key,          // Lưu ID tự động
         userId: userId.value,              // Gắn thêm userId để dễ truy xuất
-        cvName: cv.value.cvName || "Mẫu CV IT 01", // Tên CV mặc định nếu không nhập
+        cvName: cv.value.cvName || "Mẫu CV Analyst", // Tên CV mặc định nếu không nhập
         createdAt: new Date().toISOString(), // Lưu thời gian tạo
     };
 
@@ -106,6 +106,13 @@ const saveCV = () => {
 
 
 const downloadPDF = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+        // Lưu trạng thái thông báo
+        localStorage.setItem("toastMessage", "Bạn cần đăng nhập để tải CV");
+        router.push('/login');
+        return;
+    }
     const element = document.querySelector('.cv-template');
     isHidden.value = true;
     await nextTick();

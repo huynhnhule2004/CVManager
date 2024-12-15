@@ -89,7 +89,7 @@ const saveCV = () => {
         ...cv.value,
         cvId: newCvRef.key,          // Lưu ID tự động
         userId: userId.value,              // Gắn thêm userId để dễ truy xuất
-        cvName: cv.value.cvName || "Mẫu CV IT 01", // Tên CV mặc định nếu không nhập
+        cvName: cv.value.cvName || "Mẫu CV Data Scientist", // Tên CV mặc định nếu không nhập
         createdAt: new Date().toISOString(), // Lưu thời gian tạo
     };
 
@@ -107,6 +107,13 @@ const saveCV = () => {
 
 
 const downloadPDF = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+        // Lưu trạng thái thông báo
+        localStorage.setItem("toastMessage", "Bạn cần đăng nhập để tải CV");
+        router.push('/login');
+        return;
+    }
     const element = document.querySelector('.cv-template');
     isHidden.value = true;
     await nextTick();
@@ -182,251 +189,225 @@ onMounted(() => {
 
 </script>
 <template>
-    <div class="cv-container">
+    <div class="cv-wrapper">
         <div class="cv-template">
-            <div class="avatar-section">
-                <div class="avatar-wrapper">
-                            <img v-if="previewImage" :src="previewImage" alt="Ảnh đại diện" class="preview-img" />
-                            <input v-if="!isHidden" type="file" accept="image/*" @change="uploadProfilePicture"
-                            class="mt-2" />
-                        </div>
-                <div class="name-info">
-                    <h1 contenteditable="true" @input="updateField('name', $event)">{{ cv.name }}</h1>
-                    <p class="specialize" contenteditable="true" @input="updateField('specialize', $event)">{{
-                        cv.specialize }}</p>
-                    <div class="contact-info">
-                        <span class="icon">📞</span>
-                        <p contenteditable="true" @input="updateField('phone', $event)">{{ cv.phone }}</p>
-                        <span class="icon">📧</span>
-                        <p contenteditable="true" @input="updateField('email', $event)">{{ cv.email }}</p>
-                        <span class="icon">🌐</span>
-                        <p contenteditable="true" @input="updateField('website', $event)">{{ cv.website }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="cv-body">
-            <div class="section">
-                <h2>Thông Tin Cá Nhân</h2>
-                <ul>
-                    <li><b>Địa chỉ:</b> <span contenteditable="true" @input="updateField('location', $event)">{{
-                            cv.location }}</span></li>
-                    <li><b>Ngày sinh:</b> <span contenteditable="true" @input="updateField('birthday', $event)">{{
-                            cv.birthday }}</span></li>
-                    <li><b>Trường Đại học:</b> <span contenteditable="true"
-                            @input="updateField('university', $event)">{{ cv.university }}</span></li>
-                </ul>
+        <div class="header-section">
+            <div class="header-left">
+                <img v-if="previewImage" :src="previewImage" alt="Profile Picture" class="profile-img" />
+                <input v-if="!isHidden" type="file" accept="image/*" @change="uploadProfilePicture" />
             </div>
-
-            <div class="section">
-                <h2>Giới Thiệu Bản Thân</h2>
+            <div class="header-right">
+                <h1 contenteditable="true" @input="updateField('name', $event)" class="name">{{ cv.name }}</h1>
                 <p contenteditable="true" @input="updateField('introduction', $event)">{{ cv.introduction }}</p>
             </div>
+        </div>
 
-            <div class="section">
-                <h2>Kinh Nghiệm Làm Việc</h2>
-                <div v-for="(exp, index) in cv.experiences" :key="index" class="experience-item">
-                    <h3 contenteditable="true" @input="updateField('experiences[' + index + '].title', $event)">{{
-                        exp.title }}</h3>
-                    <p><b>Năm:</b> <span contenteditable="true"
-                            @input="updateField('experiences[' + index + '].year', $event)">{{ exp.year }}</span></p>
-                    <p><b>Công ty:</b> <span contenteditable="true"
-                            @input="updateField('experiences[' + index + '].company', $event)">{{ exp.company }}</span>
-                    </p>
-                    <p contenteditable="true" @input="updateField('experiences[' + index + '].description', $event)">{{
-                        exp.description }}</p>
+        <div class="body-section">
+            <div class="left-column">
+                <div class="section">
+                    <h2>Contact</h2>
+                    <ul>
+                        <li><strong>Phone:</strong> <span contenteditable="true" @input="updateField('phone', $event)">{{ cv.phone }}</span></li>
+                        <li><strong>Email:</strong> <span contenteditable="true" @input="updateField('email', $event)">{{ cv.email }}</span></li>
+                        <li><strong>Website:</strong> <span contenteditable="true" @input="updateField('website', $event)">{{ cv.website }}</span></li>
+                    </ul>
+                </div>
+                <div class="section">
+                    <h2>Skills</h2>
+                    <ul>
+                        <li v-for="(skill, index) in cv.skills" :key="index" contenteditable="true"
+                            @input="updateField('skills[' + index + ']', $event)">{{ skill }}</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="section">
-                <h2>Kỹ Năng</h2>
-                <ul>
-                    <li v-for="(skill, index) in cv.skills" :key="index" contenteditable="true"
-                        @input="updateField('skills[' + index + ']', $event)">{{ skill }}</li>
-                </ul>
-            </div>
+            <div class="right-column">
+                <div class="section">
+                    <h2>Work Experience</h2>
+                    <div v-for="(exp, index) in cv.experiences" :key="index" class="item">
+                        <h3 contenteditable="true" @input="updateField('experiences[' + index + '].position', $event)" class="position">{{ exp.position }}</h3>
+                        <p contenteditable="true" @input="updateField('experiences[' + index + '].company', $event)" class="company">{{ exp.company }}</p>
+                        <p contenteditable="true" @input="updateField('experiences[' + index + '].duration', $event)" class="duration">{{ exp.duration }}</p>
+                        <p contenteditable="true" @input="updateField('experiences[' + index + '].details', $event)" class="details">{{ exp.details }}</p>
+                    </div>
+                </div>
 
-            <div class="section">
-                <h2>Dự Án</h2>
-                <div v-for="(project, index) in cv.projects" :key="index" class="project-item">
-                    <h3 contenteditable="true" @input="updateField('projects[' + index + '].title', $event)">{{
-                        project.title }}</h3>
-                    <p><b>Năm:</b> <span contenteditable="true"
-                            @input="updateField('projects[' + index + '].year', $event)">{{ project.year }}</span></p>
-                    <p><b>Website:</b> <span contenteditable="true"
-                            @input="updateField('projects[' + index + '].website', $event)">{{ project.website }}</span>
-                    </p>
-                    <p><b>Vai trò:</b> <span contenteditable="true"
-                            @input="updateField('projects[' + index + '].role', $event)">{{ project.role }}</span></p>
-                    <p contenteditable="true" @input="updateField('projects[' + index + '].description', $event)">{{
-                        project.description }}</p>
+                <div class="section">
+                    <h2>Projects</h2>
+                    <div v-for="(project, index) in cv.projects" :key="index" class="item">
+                        <h4 contenteditable="true" @input="updateField('projects[' + index + '].title', $event)">{{
+                            project.title }}</h4>
+                        <div class="time">
+                            <span contenteditable="true" @input="updateField('projects[' + index + '].year', $event)">{{
+                                project.year }}</span>
+                        </div>
+                        <div class="web" contenteditable="true"
+                            @input="updateField('projects[' + index + '].website', $event)">
+                            {{ project.website }}
+                        </div>
+                        <div class="location" contenteditable="true"
+                            @input="updateField('projects[' + index + '].role', $event)">
+                            {{ project.role }}
+                        </div>
+                        <div class="des" contenteditable="true"
+                            @input="updateField('projects[' + index + '].description', $event)">
+                            {{ project.description }}
+                            <ul>
+                                <li v-for="(item, i) in project.tasks" :key="i" contenteditable="true"
+                                    @input="updateField('projects[' + index + '].tasks[' + i + ']', $event)">
+                                    {{ item }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                  <!-- Thông tin bổ sung -->
+                  <div class="additional-info">
+                    <h2>Additional Information</h2>
+                    <ul>
+                        <li><strong>Awards:</strong> <span contenteditable="true"
+                                @input="updateField('awards', $event)">{{ cv.awards }}</span></li>
+                        <li><strong>Languages:</strong> <span contenteditable="true"
+                                @input="updateField('languages', $event)">{{ cv.languages }}</span></li>
+                        <li><strong>Hobbies:</strong> <span contenteditable="true"
+                                @input="updateField('hobbies', $event)">{{ cv.hobbies }}</span></li>
+                    </ul>
                 </div>
             </div>
         </div>
 
 
+        </div>
     </div>
-    <div class="cv-footer">
-        <button @click="downloadPDF()" class="btn-download">Tải CV</button>
-    </div>
+    <div class="footer-section">
+            <button @click="downloadPDF" class="btn-download">Download CV</button>
+        </div>
 </template>
 
 <style scoped>
-/* Global Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: #f0f0f0;
-    font-family: 'Arial', sans-serif;
-    color: #333;
-}
-.preview-img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-
-}
-/* CV Wrapper */
-.cv-container {
+.cv-wrapper {
     max-width: 800px;
     margin: 30px auto;
     padding: 20px;
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    font-family: 'Roboto', sans-serif;
+    color: #2b2b2b;
 }
 
-/* Header */
-.cv-template {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 20px;
-    flex-grow: 1;
-    width: 100%;
-}
-
-.avatar-section {
+.header-section {
     display: flex;
     align-items: center;
+    background: #4caf50;
+    color: white;
+    padding: 20px;
+    border-radius: 8px 8px 0 0;
 }
 
-.avatar-wrapper {
-    width: 150px;
-    height: 150px;
-    position: relative;
-    border: 3px solid #ddd;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px;
+.header-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.avatar-img {
-    width: 100%;
-    height: 100%;
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
     object-fit: cover;
-}
-
-.file-input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.name-info {
-    max-width: 60%;
-}
-
-.name-info h1 {
-    font-size: 2.5rem;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-
-.specialize {
-    font-size: 1.2rem;
-    color: #007BFF;
     margin-bottom: 10px;
 }
 
-.contact-info {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+.header-right {
+    flex: 2;
+    padding-left: 20px;
 }
 
-.contact-info .icon {
+.header-right .name {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.header-right .title {
     font-size: 1.2rem;
-    color: #007BFF;
+    color: #d4e157;
+    margin-bottom: 10px;
 }
 
-/* Body */
-.cv-body .section {
-    margin-bottom: 30px;
+.header-right .summary {
+    font-size: 1rem;
+    font-style: italic;
+    color: #c8e6c9;
 }
 
-h2 {
-    font-size: 1.5rem;
-    color: #444;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #007BFF;
+.body-section {
+    display: flex;
+    background: #fff;
+    padding: 20px;
+    border-radius: 0 0 8px 8px;
+}
+
+.left-column {
+    flex: 1;
+    padding-right: 20px;
+    border-right: 2px solid #e0e0e0;
+}
+
+.right-column {
+    flex: 2;
+    padding-left: 20px;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+.section h2 {
+    font-size: 1.4rem;
+    color: #4caf50;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #a5d6a7;
     padding-bottom: 5px;
 }
 
-ul {
+.section ul {
     list-style: none;
     padding: 0;
 }
 
-li {
-    margin-bottom: 10px;
+.section li {
+    margin-bottom: 8px;
+    font-size: 1rem;
 }
 
-.project-item,
-.experience-item {
-    margin-bottom: 20px;
-}
-
-.project-item h3,
-.experience-item h3 {
+.item h3 {
     font-size: 1.2rem;
     color: #333;
     margin-bottom: 5px;
 }
 
-.project-item p,
-.experience-item p {
-    margin-bottom: 8px;
-}
-
-/* Footer */
-.cv-footer {
-    text-align: center;
-    margin: 30px;
+.item p {
+    margin: 3px 0;
+    font-size: 0.95rem;
+    color: #555;
 }
 
 .btn-download {
-    font-size: 1.2rem;
-    padding: 12px 30px;
-    background-color: #007BFF;
-    color: #fff;
+    background-color: #4caf50;
+    color: white;
     border: none;
-    border-radius: 5px;
+    padding: 12px 25px;
+    font-size: 1rem;
     cursor: pointer;
+    border-radius: 6px;
+    display: block;
+    margin: 20px auto;
     transition: background-color 0.3s ease;
 }
 
 .btn-download:hover {
-    background-color: #0056b3;
+    background-color: #388e3c;
 }
 </style>
