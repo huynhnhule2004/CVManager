@@ -9,6 +9,7 @@ import AddTemplate from "./components/pages/template/AddTemplate.vue";
 import ListTemplate from "./components/pages/template/ListTemplate.vue";
 import Detail from "./components/pages/template/Detail.vue";
 import CV2 from "./components/client/pages/cv/CV2.vue";
+import CV13 from "./components/client/pages/cv/CV13.vue";
 import HomePage from "./components/client/HomePage.vue";
 import Register from "./components/client/pages/Register.vue";
 import Login from "./components/client/pages/Login.vue";
@@ -42,6 +43,56 @@ const routes = [
         path: "cv2",
         component: () => import("./components/client/pages/cv/CV2.vue"),
         name: "cv2",
+      },
+      {
+        path: "cv13",
+        component: () => import("./components/client/pages/cv/CV13.vue"),
+        name: "cv13",
+      },
+      {
+        path: "cv14",
+        component: () => import("./components/client/pages/cv/CV14.vue"),
+        name: "cv14",
+      },
+      {
+        path: "cv15",
+        component: () => import("./components/client/pages/cv/CV15.vue"),
+        name: "cv15",
+      },
+      {
+        path: "cv16",
+        component: () => import("./components/client/pages/cv/CV16.vue"),
+        name: "cv16",
+      },
+      {
+        path: "cv17",
+        component: () => import("./components/client/pages/cv/CV17.vue"),
+        name: "cv17",
+      },
+      {
+        path: "cv18",
+        component: () => import("./components/client/pages/cv/CV18.vue"),
+        name: "cv18",
+      },
+      {
+        path: "cv19",
+        component: () => import("./components/client/pages/cv/CV19.vue"),
+        name: "cv19",
+      },
+      {
+        path: "cv20",
+        component: () => import("./components/client/pages/cv/CV20.vue"),
+        name: "cv20",
+      },
+      {
+        path: "cv21",
+        component: () => import("./components/client/pages/cv/CV21.vue"),
+        name: "cv21",
+      },
+      {
+        path: "cv22",
+        component: () => import("./components/client/pages/cv/CV22.vue"),
+        name: "cv22",
       },
     ],
   },
