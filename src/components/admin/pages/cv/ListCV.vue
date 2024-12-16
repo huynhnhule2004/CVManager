@@ -82,7 +82,7 @@ onMounted(() => {
               <tr>
                 <th>#</th>
                 <th>Tên CV</th>
-                <th>Số lượt</th>
+                <th>Số lượt tải</th>
                 <th>Hành động</th>
               </tr>
             </thead>

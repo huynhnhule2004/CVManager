@@ -66,7 +66,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="container">
+    <div class="container min-vh-100">
       <div class="page-inner">
         <h1>Lịch sử tải template</h1>
         <div class="table-responsive">
