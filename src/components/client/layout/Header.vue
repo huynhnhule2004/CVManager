@@ -53,6 +53,9 @@ const logout = () => {
                 <RouterLink to="/admin" class="dropdown-item text-dark">Đăng nhập admin</RouterLink>
               </li>
               <li>
+                <RouterLink to="/history" class="dropdown-item text-dark">Lịch sử tải</RouterLink>
+              </li>
+              <li>
                 <button @click="logout" class="dropdown-item">Đăng xuất</button>
               </li>
             </ul>

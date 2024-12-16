@@ -35,6 +35,11 @@ const routes = [
         name: "login",
       },
       {
+        path: "history",
+        component: () => import("./components/client/pages/History.vue"),
+        name: "history",
+      },
+      {
         path: "cv1",
         component: () => import("./components/client/pages/cv/CV1.vue"),
         name: "cv1",
