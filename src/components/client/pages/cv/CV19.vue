@@ -19,23 +19,15 @@ const cv = ref({
     website: 'logisticspro.com',
     location: 'Hanoi - Vietnam',
     birthday: '01/01/1990',
-    university: 'National University of Vietnam',
+    university: 'National University',
     introduction: 'With over 5 years of experience in logistics and supply chain management, I have worked with various global companies to optimize their operations and improve efficiency.',
     experiences: [
         {
             title: 'Logistics Manager',
-            year: '2021 - Present',
-            company: 'XYZ Logistics',
             description: 'Managing logistics operations, including inventory management, transportation coordination, and supply chain optimization for a global network.',
         },
-        {
-            title: 'Logistics Coordinator',
-            year: '2018 - 2021',
-            company: 'ABC Shipping',
-            description: 'Coordinated shipments, handled customer inquiries, and worked with suppliers to ensure timely delivery of goods.',
-        },
     ],
-    skills: ['Supply Chain Management', 'Inventory Control', 'Warehouse Management', 'Transportation Coordination', 'Data Analysis', 'ERP Systems'],
+    skills: ['Supply Chain Management', 'Inventory Control', 'Warehouse Management'],
     projects: [
         {
             title: 'Global Supply Chain Optimization',
@@ -215,12 +207,13 @@ onMounted(() => {
                     <div class="contact-info">
                         <p contenteditable="true" @input="updateField('phone', $event)">{{ cv.phone }}</p>
                         <p contenteditable="true" @input="updateField('email', $event)">{{ cv.email }}</p>
-                        <p contenteditable="true" @input="updateField('website', $event)">{{ cv.website }}</p>
+                        <p contenteditable="true" @input="updateField('university', $event)">{{ cv.university }}</p>
+                        <p contenteditable="true" @input="updateField('location', $event)">{{ cv.location }}</p>
+                        
                     </div>
                     <div class="personal-info">
-                        <p contenteditable="true" @input="updateField('location', $event)">{{ cv.location }}</p>
-                        <p contenteditable="true" @input="updateField('birthday', $event)">{{ cv.birthday }}</p>
-                        <p contenteditable="true" @input="updateField('university', $event)">{{ cv.university }}</p>
+                      
+                      <p contenteditable="true" @input="updateField('birthday', $event)">{{ cv.birthday }}</p>
                     </div>
                 </div>
 
@@ -237,12 +230,7 @@ onMounted(() => {
                         <h4 contenteditable="true" @input="updateField('experiences[' + index + '].title', $event)">
                             {{ exp.title }}
                         </h4>
-                        <p contenteditable="true" @input="updateField('experiences[' + index + '].company', $event)">
-                            {{ exp.company }}
-                        </p>
-                        <p contenteditable="true" @input="updateField('experiences[' + index + '].year', $event)">
-                            {{ exp.year }}
-                        </p>
+
                         <p contenteditable="true"
                             @input="updateField('experiences[' + index + '].description', $event)">
                             {{ exp.description }}
@@ -288,56 +276,74 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* Tổng thể giao diện */
 .cv-container {
   display: flex;
   justify-content: center;
-  padding: 50px 20px;
-  background-color: #f4f7fc;
+  padding: 60px 20px;
+  background-color: #f5f7fa;
+  min-height: 100vh;
 }
 
 .cv-template {
   background: #ffffff;
-  padding: 40px;
-  border-radius: 15px;
-  width: 850px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  font-family: 'Roboto', sans-serif;
+  padding: 40px 30px;
+  border-radius: 12px;
+  width: 900px;
+  max-width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  font-family: 'Helvetica Neue', sans-serif;
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 30px;
-  transition: all 0.3s ease-in-out;
 }
 
-.cv-template:hover {
-  transform: translateY(-5px);
+/* Phân chia các phần với đường gạch ngang */
+.cv-template h3 {
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #333;
+  font-size: 20px;
+  position: relative;
 }
 
+.cv-template h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 100%;
+  height: 2px;
+  background-color: #4e73df;
+  border-radius: 2px;
+}
+
+/* Avatar Section */
 .avatar-section {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .avatar-img {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
-  margin-left: 100px;
   border-radius: 50%;
-  border: 5px solid #4e73df;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 6px solid #4e73df;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
+/* CV Details */
 .cv-details h1,
-.cv-details h2,
-.cv-details h3 {
-  margin-bottom: 10px;
-  font-weight: 600;
+.cv-details h2 {
+  margin-bottom: 12px;
+  font-weight: 700;
   color: #333;
-  font-size: 52px;
+  font-size: 32px;
 }
 
 .cv-details p {
-  margin: 5px 0;
+  margin: 8px 0;
   font-size: 16px;
   color: #666;
 }
@@ -347,23 +353,26 @@ onMounted(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  margin-bottom: 20px;
 }
 
 .cv-details .contact-info p,
 .cv-details .personal-info p {
-  flex: 1 1 45%;
+  flex: 1 1 48%;
   font-size: 16px;
   color: #333;
+  line-height: 1.6;
 }
 
 .cv-details .contact-info p {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .cv-details .personal-info p {
   font-weight: 400;
 }
 
+/* Skills Section */
 .cv-details .skills ul {
   list-style-type: none;
   padding: 0;
@@ -371,11 +380,11 @@ onMounted(() => {
 }
 
 .cv-details .skills li {
-  margin: 8px 0;
+  margin: 12px 0;
   font-size: 16px;
   color: #333;
   position: relative;
-  padding-left: 20px;
+  padding-left: 25px;
 }
 
 .cv-details .skills li::before {
@@ -383,29 +392,27 @@ onMounted(() => {
   position: absolute;
   left: 0;
   top: 0;
-  font-size: 20px;
+  font-size: 22px;
   color: #4e73df;
 }
 
+/* Experience Section */
 .cv-details .experience,
 .cv-details .projects {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-.cv-details .experience h3,
-.cv-details .projects h3 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #333;
+  gap: 18px;
 }
 
 .cv-details .experience div,
 .cv-details .projects div {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .cv-details .experience h4,
@@ -421,95 +428,16 @@ onMounted(() => {
   color: #666;
 }
 
-.cv-details .projects div {
-  background-color: #f8f9fc;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* Thêm gạch ngang giữa các phần */
+.cv-template .experience,
+.cv-template .projects {
+  border-top: 2px solid #e1e1e1;
+  padding-top: 20px;
 }
 
-.cv-details .experience div,
-.cv-details .projects div {
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.btn-info {
-  background-color: #4e73df;
-  color: #fff;
-  border: none;
-  padding: 12px 25px;
-  font-size: 18px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-}
-
-
-.btn-info:active {
-  transform: translateY(1px);
-}
-
-.cv-template h1 {
-  font-size: 26px;
-  font-weight: bold;
-}
-
-.cv-template h2 {
-  font-size: 20px;
-  font-weight: normal;
-  color: #4e73df;
-}
-
-.cv-template h3 {
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-}
-
-.cv-template p {
-  font-size: 16px;
-  color: #666;
-}
-
-.cv-template .contact-info p,
-.cv-template .personal-info p {
-  font-size: 14px;
-  color: #333;
-}
-
-.cv-template .experience h3,
-.cv-template .projects h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-}
-
-.cv-template .experience div,
-.cv-template .projects div {
-  padding: 15px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-}
-
-.cv-template .experience h4,
-.cv-template .projects h4 {
-  font-size: 16px;
-  font-weight: 500;
-  color: #444;
-}
-
-.cv-template .experience p,
-.cv-template .projects p {
-  font-size: 14px;
-  color: #666;
+.cv-template .experience:first-of-type,
+.cv-template .projects:first-of-type {
+  border-top: none;
 }
 
 </style>
