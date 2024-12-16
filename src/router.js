@@ -93,6 +93,8 @@ const routes = [
         path: "cv12",
         component: () => import("./components/client/pages/cv/CV12.vue"),
         name: "cv12",
+      },
+      {
         path: "cv13",
         component: () => import("./components/client/pages/cv/CV13.vue"),
         name: "cv13",
