@@ -9,6 +9,12 @@ const router = useRouter();
 // Tạo reactive biến để lưu danh sách cvName
 const cvNames = ref([]);
 
+// Biến reactive để lưu trang hiện tại
+const currentPage = ref(1);
+
+// Số item mỗi trang
+const itemsPerPage = 10;
+
 // Biến computed để đếm số lần xuất hiện của từng cvName
 const cvNameCounts = computed(() => {
   const counts = {};
@@ -17,6 +23,19 @@ const cvNameCounts = computed(() => {
     counts[cv.name] = (counts[cv.name] || 0) + 1;
   });
   return counts;
+});
+
+// Danh sách CV trên trang hiện tại (computed)
+const paginatedCVs = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const entries = Object.entries(cvNameCounts.value).slice(start, end);
+  return entries.map(([name, count]) => ({ name, count }));
+});
+
+// Tổng số trang (computed)
+const totalPages = computed(() => {
+  return Math.ceil(Object.keys(cvNameCounts.value).length / itemsPerPage);
 });
 
 // Hàm fetch dữ liệu từ Firebase
@@ -51,6 +70,7 @@ onMounted(() => {
   fetchCVs();
 });
 </script>
+
 <template>
   <div class="container">
     <div class="page-inner">
@@ -67,24 +87,59 @@ onMounted(() => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(count, name, index) in cvNameCounts" :key="name">
-                <td>{{ index + 1 }}</td>
-                <td>{{ name }}</td>
-                <td>{{ count }}</td>
+              <tr v-for="(cv, index) in paginatedCVs" :key="cv.name">
+                <td>{{ index + 1 + (currentPage - 1) * itemsPerPage }}</td>
+                <td>{{ cv.name }}</td>
+                <td>{{ cv.count }}</td>
                 <td>
-                  <button class="btn btn-info" @click="goToDetail(name)">Xem chi tiết</button>
+                  <button class="btn btn-info" @click="goToDetail(cv.name)">Xem chi tiết</button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+
+        <!-- Bootstrap Pagination, chỉ hiển thị khi có từ 2 trang trở lên -->
+        <nav v-if="totalPages > 1" aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+              <button
+                class="page-link"
+                @click="currentPage--"
+                :disabled="currentPage === 1"
+              >
+                Trước
+              </button>
+            </li>
+            <li
+              v-for="page in totalPages"
+              :key="page"
+              class="page-item"
+              :class="{ active: page === currentPage }"
+            >
+              <button class="page-link" @click="currentPage = page">
+                {{ page }}
+              </button>
+            </li>
+            <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+              <button
+                class="page-link"
+                @click="currentPage++"
+                :disabled="currentPage === totalPages"
+              >
+                Tiếp
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
-
 </template>
 
-
-
 <style scoped>
+.pagination .page-item.disabled .page-link {
+  pointer-events: none;
+  opacity: 0.6;
+}
 </style>

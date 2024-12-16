@@ -142,7 +142,7 @@ onMounted(() => {
                 <ul class="pagination justify-content-center">
                     <li class="page-item" :class="{ disabled: currentPage === 1 }">
                         <button class="page-link" @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
-                            Previous
+                            Trước
                         </button>
                     </li>
                     <li class="page-item" v-for="page in totalPages" :key="page"
@@ -154,7 +154,7 @@ onMounted(() => {
                     <li class="page-item" :class="{ disabled: currentPage === totalPages }">
                         <button class="page-link" @click="changePage(currentPage + 1)"
                             :disabled="currentPage === totalPages">
-                            Next
+                            Tiếp
                         </button>
                     </li>
                 </ul>
