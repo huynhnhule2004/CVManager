@@ -497,23 +497,6 @@ h2 {
     top: 10px;
 }
 
-/* Nút Tải CV */
-button {
-    background-color: #4CAF50;
-    color: white;
-    font-size: 18px;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-button:hover {
-    background-color: #388e3c;
-}
-
 /* Điều chỉnh cho mobile */
 @media (max-width: 768px) {
     .container1 {

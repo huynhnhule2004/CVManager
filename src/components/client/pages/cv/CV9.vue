@@ -267,10 +267,10 @@ onMounted(() => {
         </div>
     </div>
 </div>
-    <div class="cv-footer">
-        <button @click="downloadPDF()" class="btn-download">Tải CV</button>
-    </div>
-
+<div class="d-flex justify-content-center align-items-center my-5">
+                <!-- <button @click="saveCV" class="me-3 btn btn-info">Lưu CV</button> -->
+                <button @click="downloadPDF()" class="btn btn-info">Tải CV về</button>
+            </div>
 </template>
 <style scoped>
 body {
@@ -412,20 +412,5 @@ body {
 .cv-footer {
     text-align: center;
     margin: 30px;
-}
-
-.btn-download {
-    font-size: 1.2rem;
-    padding: 12px 30px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.btn-download:hover {
-    background-color: #0056b3;
 }
 </style>

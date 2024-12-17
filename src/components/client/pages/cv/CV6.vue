@@ -280,9 +280,10 @@ onMounted(() => {
 
         </div>
     </div>
-    <div class="footer-section">
-            <button @click="downloadPDF" class="btn-download">Download CV</button>
-        </div>
+    <div class="d-flex justify-content-center align-items-center my-5">
+                <!-- <button @click="saveCV" class="me-3 btn btn-info">Lưu CV</button> -->
+                <button @click="downloadPDF()" class="btn btn-info">Tải CV về</button>
+            </div>
 </template>
 
 <style scoped>
@@ -394,20 +395,4 @@ onMounted(() => {
     color: #555;
 }
 
-.btn-download {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 6px;
-    display: block;
-    margin: 20px auto;
-    transition: background-color 0.3s ease;
-}
-
-.btn-download:hover {
-    background-color: #388e3c;
-}
 </style>

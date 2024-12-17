@@ -27,7 +27,7 @@ const cv = ref({
 
         },
         {
-            
+
             title: 'Social Media Specialist',
             year: '2017 - 2020',
             company: 'ABC Agency',
@@ -193,105 +193,114 @@ onMounted(() => {
 </script>
 <template>
     <div class="cv-container">
-      <div class="cv-template">
-        <!-- Cột trái -->
-        <div class="left-column">
-          <!-- Thông tin cá nhân -->
-          <div class="avatar-wrapper">
-            <img v-if="previewImage" :src="previewImage" alt="Ảnh đại diện" class="preview-img" />
-            <input v-if="!isHidden" type="file" accept="image/*" @change="uploadProfilePicture" class="mt-2" />
-          </div>
-          <div class="info">
-            <h1 contenteditable="true" @input="updateField('name', $event)">{{ cv.name }}</h1>
-            <div class="specialize" contenteditable="true" @input="updateField('specialize', $event)">
-              {{ cv.specialize }}
+        <div class="cv-template">
+            <!-- Cột trái -->
+            <div class="left-column">
+                <!-- Thông tin cá nhân -->
+                <div class="avatar-wrapper">
+                    <img v-if="previewImage" :src="previewImage" alt="Ảnh đại diện" class="preview-img" />
+                    <input v-if="!isHidden" type="file" accept="image/*" @change="uploadProfilePicture" class="mt-2" />
+                </div>
+                <div class="info">
+                    <h1 contenteditable="true" @input="updateField('name', $event)">{{ cv.name }}</h1>
+                    <div class="specialize" contenteditable="true" @input="updateField('specialize', $event)">
+                        {{ cv.specialize }}
+                    </div>
+                    <ul class="contact-info">
+                        <li>
+                            <span>P</span>
+                            <p contenteditable="true" @input="updateField('phone', $event)">{{ cv.phone }}</p>
+                        </li>
+                        <li>
+                            <span>E</span>
+                            <p contenteditable="true" @input="updateField('email', $event)">{{ cv.email }}</p>
+                        </li>
+                        <li>
+                            <span>W</span>
+                            <p contenteditable="true" @input="updateField('website', $event)">{{ cv.website }}</p>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Mục tiêu nghề nghiệp -->
+                <div class="intro">
+                    <h2>Career Objective</h2>
+                    <p contenteditable="true" @input="updateField('introduction', $event)">{{ cv.introduction }}</p>
+                </div>
+                <!-- Thông tin bổ sung -->
+                <div class="additional-info">
+                    <h2>Additional Information</h2>
+                    <ul>
+                        <li>
+                            <strong>Awards:</strong>
+                            <span contenteditable="true" @input="updateField('awards', $event)">{{ cv.awards }}</span>
+                        </li>
+                        <li>
+                            <strong>Languages:</strong>
+                            <span contenteditable="true" @input="updateField('languages', $event)">{{ cv.languages
+                                }}</span>
+                        </li>
+                        <li>
+                            <strong>Hobbies:</strong>
+                            <span contenteditable="true" @input="updateField('hobbies', $event)">{{ cv.hobbies }}</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <ul class="contact-info">
-              <li>
-                <span>P</span>
-                <p contenteditable="true" @input="updateField('phone', $event)">{{ cv.phone }}</p>
-              </li>
-              <li>
-                <span>E</span>
-                <p contenteditable="true" @input="updateField('email', $event)">{{ cv.email }}</p>
-              </li>
-              <li>
-                <span>W</span>
-                <p contenteditable="true" @input="updateField('website', $event)">{{ cv.website }}</p>
-              </li>
-            </ul>
-          </div>
-          <!-- Mục tiêu nghề nghiệp -->
-          <div class="intro">
-            <h2>Career Objective</h2>
-            <p contenteditable="true" @input="updateField('introduction', $event)">{{ cv.introduction }}</p>
-          </div>
-          <!-- Thông tin bổ sung -->
-          <div class="additional-info">
-            <h2>Additional Information</h2>
-            <ul>
-              <li>
-                <strong>Awards:</strong>
-                <span contenteditable="true" @input="updateField('awards', $event)">{{ cv.awards }}</span>
-              </li>
-              <li>
-                <strong>Languages:</strong>
-                <span contenteditable="true" @input="updateField('languages', $event)">{{ cv.languages }}</span>
-              </li>
-              <li>
-                <strong>Hobbies:</strong>
-                <span contenteditable="true" @input="updateField('hobbies', $event)">{{ cv.hobbies }}</span>
-              </li>
-            </ul>
-          </div>
+
+            <!-- Cột phải -->
+            <div class="right-column">
+                <!-- Kinh nghiệm làm việc -->
+                <div class="experience">
+                    <h2>Work Experience</h2>
+                    <div v-for="(exp, index) in cv.experiences" :key="index" class="experience-item">
+                        <h3 contenteditable="true" @input="updateField('experiences[' + index + '].title', $event)">{{
+                            exp.title }}</h3>
+                        <p class="company" contenteditable="true"
+                            @input="updateField('experiences[' + index + '].company', $event)">
+                            {{ exp.company }}
+                        </p>
+                        <p class="year" contenteditable="true"
+                            @input="updateField('experiences[' + index + '].year', $event)">{{ exp.year }}</p>
+                        <p class="description" contenteditable="true"
+                            @input="updateField('experiences[' + index + '].description', $event)">
+                            {{ exp.description }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Học vấn -->
+                <div class="education">
+                    <h2>Education</h2>
+                    <div v-for="(edu, index) in cv.education" :key="index" class="education-item">
+                        <h3 contenteditable="true" @input="updateField('education[' + index + '].degree', $event)">{{
+                            edu.degree }}</h3>
+                        <p class="school" contenteditable="true"
+                            @input="updateField('education[' + index + '].school', $event)">{{ edu.school }}</p>
+                        <p class="year" contenteditable="true"
+                            @input="updateField('education[' + index + '].year', $event)">{{ edu.year }}</p>
+                    </div>
+                </div>
+
+                <!-- Kỹ năng -->
+                <div class="skills">
+                    <h2>Skills</h2>
+                    <ul>
+                        <li v-for="(skill, index) in cv.skills" :key="index" contenteditable="true"
+                            @input="updateField('skills[' + index + ']', $event)">
+                            {{ skill }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-  
-        <!-- Cột phải -->
-        <div class="right-column">
-          <!-- Kinh nghiệm làm việc -->
-          <div class="experience">
-            <h2>Work Experience</h2>
-            <div v-for="(exp, index) in cv.experiences" :key="index" class="experience-item">
-              <h3 contenteditable="true" @input="updateField('experiences[' + index + '].title', $event)">{{ exp.title }}</h3>
-              <p class="company" contenteditable="true" @input="updateField('experiences[' + index + '].company', $event)">
-                {{ exp.company }}
-              </p>
-              <p class="year" contenteditable="true" @input="updateField('experiences[' + index + '].year', $event)">{{ exp.year }}</p>
-              <p class="description" contenteditable="true" @input="updateField('experiences[' + index + '].description', $event)">
-                {{ exp.description }}
-              </p>
-            </div>
-          </div>
-  
-          <!-- Học vấn -->
-          <div class="education">
-            <h2>Education</h2>
-            <div v-for="(edu, index) in cv.education" :key="index" class="education-item">
-              <h3 contenteditable="true" @input="updateField('education[' + index + '].degree', $event)">{{ edu.degree }}</h3>
-              <p class="school" contenteditable="true" @input="updateField('education[' + index + '].school', $event)">{{ edu.school }}</p>
-              <p class="year" contenteditable="true" @input="updateField('education[' + index + '].year', $event)">{{ edu.year }}</p>
-            </div>
-          </div>
-  
-          <!-- Kỹ năng -->
-          <div class="skills">
-            <h2>Skills</h2>
-            <ul>
-              <li v-for="(skill, index) in cv.skills" :key="index" contenteditable="true" @input="updateField('skills[' + index + ']', $event)">
-                {{ skill }}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
 
     </div>
-          <!-- Nút tải xuống -->
-          <div class="actions">
-        <button @click="downloadPDF()" class="btn-download">Tải CV về</button>
-      </div>
-  </template>
-  
+    <div class="d-flex justify-content-center align-items-center my-5">
+        <!-- <button @click="saveCV" class="me-3 btn btn-info">Lưu CV</button> -->
+        <button @click="downloadPDF()" class="btn btn-info">Tải CV về</button>
+    </div>
+</template>
+
 
 <style scoped>
 body {
@@ -321,7 +330,8 @@ body {
     flex-grow: 1;
 }
 
-.left-column, .right-column {
+.left-column,
+.right-column {
     padding-right: 20px;
     flex: 1;
     margin-right: 15px;
@@ -334,6 +344,7 @@ body {
     text-align: center;
     /* margin-bottom: 20px; */
 }
+
 .avatar-wrapper {
 
     position: relative;
@@ -383,7 +394,8 @@ body {
 }
 
 .contact-info span:hover {
-    transform: scale(1.1); /* Nhấn mạnh khi hover */
+    transform: scale(1.1);
+    /* Nhấn mạnh khi hover */
 }
 
 h2 {
@@ -406,30 +418,16 @@ li {
     color: #555;
 }
 
-button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    border-radius: 50px;
-    transition: background-color 0.3s ease, transform 0.3s;
-    display: block;
-    margin: 20px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
 
-button:hover {
-    background-color: #388e3c;
-    transform: scale(1.05);
-}
-
-.experience-item, .education-item, .project-item {
+.experience-item,
+.education-item,
+.project-item {
     margin-bottom: 25px;
 }
 
-.year, .company, .description {
+.year,
+.company,
+.description {
     font-size: 1.1rem;
     color: #666;
     margin: 5px 0;
@@ -445,5 +443,4 @@ button:hover {
     width: 200px;
     font-size: 1.2rem;
 }
-
 </style>

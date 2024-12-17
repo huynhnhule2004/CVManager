@@ -329,9 +329,10 @@ onMounted(() => {
 
     </div>
     <!-- Nút tải xuống -->
-    <div class="actions">
-        <button @click="downloadPDF()" class="btn-download">Tải CV về</button>
-    </div>
+    <div class="d-flex justify-content-center align-items-center my-5">
+                <!-- <button @click="saveCV" class="me-3 btn btn-info">Lưu CV</button> -->
+                <button @click="downloadPDF()" class="btn btn-info">Tải CV về</button>
+            </div>
 </template>
 
 <style scoped>
@@ -499,23 +500,6 @@ li {
     margin-bottom: 10px;
     font-size: 1rem;
     color: #555;
-}
-
-button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-    display: block;
-    margin: 20px auto;
-}
-
-button:hover {
-    background-color: #388e3c;
 }
 
 .experience-item,
