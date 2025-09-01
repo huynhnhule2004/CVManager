@@ -28,7 +28,7 @@ const logout = () => {
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
                 <a href="index.html" class="logo">
-                    <img src="../assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
+                    <img src="../../../assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand"
                         height="20" />
                 </a>
                 <div class="nav-toggle">
@@ -90,7 +90,7 @@ const logout = () => {
                                     <div class="notif-center">
                                         <a href="#">
                                             <div class="notif-img">
-                                                <img src="../assets/img/jm_denis.jpg" alt="Img Profile" />
+                                                <img src="../../../assets/img/jm_denis.jpg" alt="Img Profile" />
                                             </div>
                                             <div class="notif-content">
                                                 <span class="subject">Jimmy Denis</span>
@@ -100,7 +100,7 @@ const logout = () => {
                                         </a>
                                         <a href="#">
                                             <div class="notif-img">
-                                                <img src="../assets/img/chadengle.jpg" alt="Img Profile" />
+                                                <img src="../../../assets/img/chadengle.jpg" alt="Img Profile" />
                                             </div>
                                             <div class="notif-content">
                                                 <span class="subject">Chad</span>
@@ -110,7 +110,7 @@ const logout = () => {
                                         </a>
                                         <a href="#">
                                             <div class="notif-img">
-                                                <img src="../assets/img/mlane.jpg" alt="Img Profile" />
+                                                <img src="../../../assets/img/mlane.jpg" alt="Img Profile" />
                                             </div>
                                             <div class="notif-content">
                                                 <span class="subject">Jhon Doe</span>
@@ -122,7 +122,7 @@ const logout = () => {
                                         </a>
                                         <a href="#">
                                             <div class="notif-img">
-                                                <img src="../assets/img/talha.jpg" alt="Img Profile" />
+                                                <img src="../../../assets/img/talha.jpg" alt="Img Profile" />
                                             </div>
                                             <div class="notif-content">
                                                 <span class="subject">Talha</span>
@@ -177,7 +177,7 @@ const logout = () => {
                                         </a>
                                         <a href="#">
                                             <div class="notif-img">
-                                                <img src="../assets/img/profile2.jpg" alt="Img Profile" />
+                                                <img src="../../../assets/img/profile2.jpg" alt="Img Profile" />
                                             </div>
                                             <div class="notif-content">
                                                 <span class="block">

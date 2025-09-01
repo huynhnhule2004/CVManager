@@ -31,7 +31,7 @@ const logout = () => {
   <header class="header container-fluid">
     <RouterLink to="/" class="logo">
       <!-- Logo hình ảnh -->
-      <img src="./../../../assets/img/logo-new.png" alt="TopCV AI Logo" class="img-fluid" />
+      <p class="text-white m-0" style="font-size: 30px; font-weight: bold;">TCV</p>
     </RouterLink>
     <nav>
       <ul class="nav-list d-flex list-unstyled">
