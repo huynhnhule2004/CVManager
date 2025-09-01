@@ -2,64 +2,53 @@
 import { ref, computed, onMounted } from "vue";
 import { toast } from "vue3-toastify";
 import { inject } from 'vue';
-
+import cv1 from '@/assets/img/CV1.png'
+import cv2 from '@/assets/img/CV2.png'
+import cv3 from '@/assets/img/CV3.png'
+import cv4 from '@/assets/img/CV4.png'
+import cv5 from '@/assets/img/CV5.png'
+import cv6 from '@/assets/img/CV6.png'
+import cv7 from '@/assets/img/CV7.png'
+import cv8 from '@/assets/img/CV8.png'
+import cv9 from '@/assets/img/CV9.png'
+import cv10 from '@/assets/img/CV10.png'
+import cv11 from '@/assets/img/CV11.png'
+import cv12 from '@/assets/img/CV12.png'
+import cv13 from '@/assets/img/2.png'
+import cv14 from '@/assets/img/cv14.png'
+import cv15 from '@/assets/img/13.png'
+import cv16 from '@/assets/img/cv16.png'
+import cv17 from '@/assets/img/cv17.png'
+import cv18 from '@/assets/img/18.png'
+import cv19 from '@/assets/img/19.png'
+import cv20 from '@/assets/img/cv20.png'
+import cv21 from '@/assets/img/cv21.png'
+import cv22 from '@/assets/img/cv22.png'
 const authState = inject('authState');
 
 const cvItems = [
-    { image: "/src/assets/img/CV1.png", title: "Mẫu CV IT 01", link: "/cv1" },
-    {
-        image: "/src/assets/img/CV2.png",
-        title: "Mẫu CV Designer 01",
-        link: "/cv2",
-    },
-    { image: "/src/assets/img/CV3.png", title: "Mẫu CV IT 02", link: "/cv3" },
-    {
-        image: "/src/assets/img/CV4.png",
-        title: "Mẫu CV Ngôn ngữ học",
-        link: "/cv4",
-    },
-    { image: "/src/assets/img/CV5.png", title: "Mẫu CV Marketing", link: "/cv5" },
-    {
-        image: "/src/assets/img/CV6.png",
-        title: "Mẫu CV Data Scientist",
-        link: "/cv6",
-    },
-    {
-        image: "/src/assets/img/CV7.png",
-        title: "Mẫu CV Content Writer",
-        link: "/cv7",
-    },
-    {
-        image: "/src/assets/img/CV8.png",
-        title: "Mẫu CV Cybersecurity",
-        link: "/cv8",
-    },
-    {
-        image: "/src/assets/img/CV9.png",
-        title: "Mẫu CV Project Manager",
-        link: "/cv9",
-    },
-    {
-        image: "/src/assets/img/CV10.png",
-        title: "Mẫu CV Engineer",
-        link: "/cv10",
-    },
-    { image: "/src/assets/img/CV11.png", title: "Mẫu CV Analyst", link: "/cv11" },
-    {
-        image: "/src/assets/img/CV12.png",
-        title: "Mẫu CV Data Scientist",
-        link: "/cv12",
-    },
-    { image: '/src/assets/img/2.png', title: 'Mẫu CV Simple 01', link: '/cv13' },
-    { image: '/src/assets/img/cv14.png', title: 'Mẫu CV Simple 02', link: '/cv14' },
-    { image: '/src/assets/img/13.png', title: 'Mẫu CV Marketing 01', link: '/cv15' },
-    { image: '/src/assets/img/cv16.png', title: 'Mẫu CV Chi tiết', link: '/cv16' },
-    { image: '/src/assets/img/cv17.png', title: 'Mẫu CV Designer 02', link: '/cv17' },
-    { image: '/src/assets/img/18.png', title: 'Mẫu CV Designer 03', link: '/cv18' },
-    { image: '/src/assets/img/19.png', title: 'Mẫu CV Chi tiết 02', link: '/cv19' },
-    { image: '/src/assets/img/cv20.png', title: 'Mẫu CV Kế toán', link: '/cv20' },
-    { image: '/src/assets/img/cv21.png', title: 'Mẫu CV Ngân hàng', link: '/cv21' },
-    { image: '/src/assets/img/cv22.png', title: 'Mẫu CV Bác sĩ', link: '/cv22' },
+  { image: cv1, title: "Mẫu CV IT 01", link: "/cv1" },
+  { image: cv2, title: "Mẫu CV Designer 01", link: "/cv2" },
+  { image: cv3, title: "Mẫu CV IT 02", link: "/cv3" },
+  { image: cv4, title: "Mẫu CV Ngôn ngữ học", link: "/cv4" },
+  { image: cv5, title: "Mẫu CV Marketing", link: "/cv5" },
+  { image: cv6, title: "Mẫu CV Data Scientist", link: "/cv6" },
+  { image: cv7, title: "Mẫu CV Content Writer", link: "/cv7" },
+  { image: cv8, title: "Mẫu CV Cybersecurity", link: "/cv8" },
+  { image: cv9, title: "Mẫu CV Project Manager", link: "/cv9" },
+  { image: cv10, title: "Mẫu CV Engineer", link: "/cv10" },
+  { image: cv11, title: "Mẫu CV Analyst", link: "/cv11" },
+  { image: cv12, title: "Mẫu CV Data Scientist", link: "/cv12" },
+  { image: cv13, title: "Mẫu CV Simple 01", link: "/cv13" },
+  { image: cv14, title: "Mẫu CV Simple 02", link: "/cv14" },
+  { image: cv15, title: "Mẫu CV Marketing 01", link: "/cv15" },
+  { image: cv16, title: "Mẫu CV Chi tiết", link: "/cv16" },
+  { image: cv17, title: "Mẫu CV Designer 02", link: "/cv17" },
+  { image: cv18, title: "Mẫu CV Designer 03", link: "/cv18" },
+  { image: cv19, title: "Mẫu CV Chi tiết 02", link: "/cv19" },
+  { image: cv20, title: "Mẫu CV Kế toán", link: "/cv20" },
+  { image: cv21, title: "Mẫu CV Ngân hàng", link: "/cv21" },
+  { image: cv22, title: "Mẫu CV Bác sĩ", link: "/cv22" },
 ];
 
 const currentPage = ref(1);
